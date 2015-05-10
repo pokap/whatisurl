@@ -16,6 +16,11 @@ Notification:
 
 * ``app/console sonata:notification:start``
 
+## Deployement
+
+* ``sudo gem install capistrano -v 2.15.5``
+* ``sudo gem install capifony``
+
 ## Original Credits
 
 * Florent DENIS
