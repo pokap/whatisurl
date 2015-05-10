@@ -1,0 +1,18 @@
+services:
+    site.link.parser:
+        class:      Application\Component\Link\Parser
+        arguments:
+            - '@site.link.http_client'
+            - '@site.link.url_factory'
+            - '@site.link.url_manager'
+            - '@site.link.robots_factory'
+            - '@site.link.robots_transformer'
+            - ['@site.link.html_analyser', '@site.link.rss_analyser'] # TODO use compiler pass with TAGs
+            - 'Whatisurlbot'
+        calls:
+            - ['setLogger', ['@?logger']]
+
+    site.link.http_client:
+        class:      Application\Component\Link\HttpClient
+        arguments:
+            - 'Whatisurlbot/0.1 (+http://www.whatisurl.com/#bot)'

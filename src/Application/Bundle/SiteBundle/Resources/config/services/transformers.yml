@@ -1,0 +1,5 @@
+services:
+    site.link.robots_transformer:
+        class:      Application\Bundle\SiteBundle\Transformer\RobotsTransformer
+        arguments:
+            - '@site.link.robots_repository'

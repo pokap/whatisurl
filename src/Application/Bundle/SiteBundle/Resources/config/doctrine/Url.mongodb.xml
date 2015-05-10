@@ -1,0 +1,39 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Application\Bundle\SiteBundle\Document\Url"
+              collection="url"
+              repository-class="Application\Bundle\SiteBundle\Repository\UrlRepository">
+
+        <field name="id" id="true" />
+
+        <field fieldName="schema"        type="string" />
+        <field fieldName="host"          type="string" />
+        <field fieldName="port"          type="int" />
+        <field fieldName="path"          type="string" />
+        <field fieldName="queryString"   type="collection"   name="query_string" />
+
+        <field fieldName="status"        type="string" />
+        <field fieldName="hash"          type="string" />
+        <field fieldName="updatedAt"     type="date"         name="updated_at" />
+
+        <embed-one fieldName="httpHeader" target-document="Application\Bundle\SiteBundle\Document\HttpHeader" field="http_header" />
+
+        <embed-many field="providers" strategy="set">
+            <discriminator-field name="type" />
+            <discriminator-map>
+                <discriminator-mapping value="page"     class="Application\Bundle\SiteBundle\Document\Provider\PageProvider" />
+                <discriminator-mapping value="rss"      class="Application\Bundle\SiteBundle\Document\Provider\RssProvider" />
+            </discriminator-map>
+        </embed-many>
+
+        <indexes>
+            <index name="hash_id">
+                <key name="hash" order="asc" />
+            </index>
+        </indexes>
+
+    </document>
+
+</doctrine-mongo-mapping>

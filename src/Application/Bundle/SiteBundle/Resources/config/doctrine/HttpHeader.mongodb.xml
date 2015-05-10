@@ -1,0 +1,17 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <embedded-document name="Application\Bundle\SiteBundle\Document\HttpHeader">
+
+        <field fieldName="contentType"           type="string"   name="content_type" />
+        <field fieldName="contentTypePresumed"   type="string"   name="content_type_presumed" />
+        <field fieldName="contentDisposition"    type="string"   name="content_disposition" />
+        <field fieldName="contentLanguage"       type="string"   name="content_language" />
+        <field fieldName="etag"                  type="string" />
+        <field fieldName="lastModified"          type="date"     name="last_modified" />
+        <field fieldName="statusCode"            type="int"      name="status_code"/>
+
+    </embedded-document>
+
+</doctrine-mongo-mapping>

@@ -1,0 +1,24 @@
+services:
+    site.notification.repository:
+        class:      Application\Bundle\SiteBundle\Repository\NotificationRepository
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - 'Application\Bundle\SiteBundle\Document\Notification'
+
+    site.link.robots_repository:
+        class:      Application\Bundle\SiteBundle\Repository\RobotsRepository
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - 'Application\Bundle\SiteBundle\Document\Robots'
+
+    site.link.url_direction_repository:
+        class:      Application\Bundle\SiteBundle\Repository\UrlDirectionRepository
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - 'Application\Bundle\SiteBundle\Document\UrlDirection'
+
+    site.link.url_repository:
+        class:      Application\Bundle\SiteBundle\Repository\UrlRepository
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - 'Application\Bundle\SiteBundle\Document\Url'

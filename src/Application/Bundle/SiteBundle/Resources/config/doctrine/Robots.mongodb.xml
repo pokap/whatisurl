@@ -1,0 +1,25 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Application\Bundle\SiteBundle\Document\Robots"
+              collection="robots"
+              repository-class="Application\Bundle\SiteBundle\Repository\RobotsRepository">
+
+        <field name="id" id="true" />
+
+        <field fieldName="host"          type="string" />
+        <field fieldName="userAgent"     type="string"       name="user_agent" />
+        <field fieldName="directives"    type="hash" />
+
+        <field fieldName="updatedAt"     type="date"         name="updated_at" />
+
+        <indexes>
+            <index name="host_id">
+                <key name="host" order="asc" />
+            </index>
+        </indexes>
+
+    </document>
+
+</doctrine-mongo-mapping>

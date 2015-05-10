@@ -1,0 +1,17 @@
+services:
+    site.link.url_direction_manager:
+        class:      Application\Bundle\SiteBundle\Manager\UrlDirectionManager
+        arguments:
+            - '@site.link.url_direction_repository'
+
+    site.link.url_manager:
+        class:      Application\Bundle\SiteBundle\Manager\UrlManager
+        arguments:
+            - '@site.link.url_repository'
+        calls:
+            - ['setLogger', ['@?logger']]
+
+    site.notification.manager:
+        class:      Application\Bundle\SiteBundle\Manager\NotificationManager
+        arguments:
+            - '@site.notification.repository'

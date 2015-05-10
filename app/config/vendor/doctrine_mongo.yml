@@ -1,0 +1,15 @@
+# MongoDB Configuration
+doctrine_mongodb:
+    connections:
+        default:
+            server:   %doctrine_mongodb_server%
+            options:  %doctrine_mongodb_options%
+
+    default_database: %doctrine_mongodb_database%
+
+    document_managers:
+        default:
+            metadata_cache_driver: %doctrine_meta_cache%
+            mappings:
+                SonataNotificationBundle: ~
+                ApplicationSiteBundle: ~

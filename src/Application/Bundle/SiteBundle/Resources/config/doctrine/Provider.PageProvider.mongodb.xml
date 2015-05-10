@@ -1,0 +1,14 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <embedded-document name="Application\Bundle\SiteBundle\Document\Provider\PageProvider">
+
+        <field fieldName="icon"         type="string" />
+        <field fieldName="title"        type="string" />
+
+        <embed-one field="archive" target-document="Application\Bundle\SiteBundle\Document\WebArchive\WebArchive" />
+
+    </embedded-document>
+
+</doctrine-mongo-mapping>

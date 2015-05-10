@@ -1,0 +1,23 @@
+{% extends '::angular-base.html.twig' %}
+
+{% block body %}
+    <div class="container" ng-controller="SearchController as search">
+        <h1>What is URL?</h1>
+        <form class="form-search" ng-submit="search.submit()">
+            <div id="message-error"></div>
+            <input type="text" id="input-url" ng-model="search.url" class="form-control" placeholder="http://..." required autofocus>
+            <p><button class="btn btn-default" type="submit">Search</button></p>
+        </form>
+
+        <div id="output"></div>
+
+        <hr/>
+        <h2 id="bot">Whatisurlbot</h2>
+        <p>
+            <b>Whatisurlbot</b> is the search bot software used by What-is-url, which collects documents from the web to
+            build a repository for Whatisurl.
+        </p>
+        <p>Whatisurlbot send request with the User-agent, example: <b>{{ userAgent }}</b>.</p>
+        <p>Whatisurlbot is compatible with <b>robots.txt</b>.</p>
+    </div>
+{% endblock body %}

@@ -1,0 +1,30 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Application\Bundle\SiteBundle\Document\Notification"
+              collection="notification.message"
+              repository-class="Application\Bundle\SiteBundle\Repository\NotificationRepository">
+
+        <field name="id" id="true" />
+
+        <field fieldName="type"          type="string"       name="type" />
+        <field fieldName="body"          type="hash"         name="body" />
+        <field fieldName="state"         type="int"          name="state" />
+        <field fieldName="restartCount"  type="int"          name="restart_count" />
+
+        <field fieldName="createdAt"     type="date"         name="created_at" />
+        <field fieldName="updatedAt"     type="date"         name="updated_at" />
+        <field fieldName="startedAt"     type="date"         name="started_at" />
+        <field fieldName="completedAt"   type="date"         name="completed_at" />
+
+        <indexes>
+            <index name="wait_queue">
+                <key name="state" order="asc" />
+                <key name="createdAt" order="desc" />
+            </index>
+        </indexes>
+
+    </document>
+
+</doctrine-mongo-mapping>

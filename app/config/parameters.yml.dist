@@ -1,0 +1,14 @@
+# This file is a "template" of what your parameters.yml file should look like
+parameters:
+    # doctrine mongodb connection
+    doctrine_mongodb_server:    mongodb://localhost:27017?journal=true&w=1&wTimeoutMS=5000
+    doctrine_mongodb_options:   {}
+    doctrine_mongodb_database:  whatisurl
+
+    # doctrine metadata cache configuration
+    doctrine_meta_cache:        array
+
+    locale:            en
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            ThisTokenIsNotSoSecretChangeIt

@@ -1,0 +1,15 @@
+/web/bundles/
+/web/assets/
+/app/bootstrap.php.cache
+/app/cache/*
+/app/config/parameters.yml
+/app/logs/*
+!app/cache/.gitkeep
+!app/logs/.gitkeep
+/app/phpunit.xml
+/vendor/
+/bin/
+/front/.sass-cache/
+/front/node_modules/
+/front/src/bower/
+/composer.phar

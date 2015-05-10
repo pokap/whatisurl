@@ -1,0 +1,7 @@
+site_front_default_index:
+    pattern:  /
+    defaults: { _controller: ApplicationSiteBundle:Front/App:index }
+
+site_front_default_search:
+    pattern:  /search
+    defaults: { _controller: ApplicationSiteBundle:Front/App:search }

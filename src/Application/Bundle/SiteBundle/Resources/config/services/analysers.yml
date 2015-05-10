@@ -1,0 +1,15 @@
+services:
+    site.link.html_analyser:
+        class:      Application\Bundle\SiteBundle\Analyser\HtmlAnalyser
+        arguments:
+            - '@site.link.analyse_report_factory'
+            - '@site.link.url_factory'
+            - '@site.link.url_manager'
+        calls:
+            - ['setLogger', ['@?logger']]
+
+    site.link.rss_analyser:
+        class:      Application\Bundle\SiteBundle\Analyser\RssAnalyser
+        arguments:
+            - '@site.link.analyse_report_factory'
+            - '@site.link.url_factory'

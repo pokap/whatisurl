@@ -1,0 +1,16 @@
+{
+  "name": "web-front",
+  "version": "0.0.1",
+  "description": "Shyde frontend assets generation",
+  "devDependencies": {
+    "browser-sync": "~0.8.2",
+    "gulp": "~3.8.7",
+    "gulp-ruby-sass": "^0.7.1",
+    "gulp-autoprefixer": "0.0.8",
+    "gulp-cssmin": "~0.1.6",
+    "gulp-uglify": "~0.3.1",
+    "gulp-concat": "~2.3.4",
+    "watchify": "~0.10.1"
+  },
+  "dependencies": {}
+}

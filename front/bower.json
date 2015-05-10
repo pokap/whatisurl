@@ -1,0 +1,12 @@
+{
+  "name": "assets_src",
+  "version": "0.0.0",
+  "authors": [
+    "Florent Denis <dflorent.pokap@gmail.com>"
+  ],
+  "description": "Whatisurl Project dependencies",
+  "dependencies": {
+    "json-human": "*"
+  },
+  "devDependencies": {}
+}

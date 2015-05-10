@@ -1,0 +1,8 @@
+# This file is auto-generated during the composer install
+parameters:
+    doctrine_mongodb_server: 'mongodb://localhost:27017?journal=true&w=1&wTimeoutMS=5000'
+    doctrine_mongodb_options: {  }
+    doctrine_mongodb_database: whatisurl
+    doctrine_meta_cache: apc
+    locale: en
+    secret: '6DEeJ0Y[fmEjD6q16?Am)Kmk@%-:a_VB2/*1xYh5@7y79=cd'

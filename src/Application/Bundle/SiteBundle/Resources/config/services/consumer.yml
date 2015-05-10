@@ -1,0 +1,14 @@
+services:
+    site.link.parser_consumer:
+        class:      Application\Bundle\SiteBundle\Consumer\ParserConsumer
+        tags:       [{ name: sonata.notification.consumer, type: parser }]
+        arguments:
+            - '@site.link.parser'
+            - '@site.link.url_manager'
+            - '@sonata.notification.backend'
+
+    site.link.web_archive_consumer:
+        class:      Application\Bundle\SiteBundle\Consumer\WebArchiveConsumer
+        tags:       [{ name: sonata.notification.consumer, type: web_archive }]
+        arguments:
+            - '@site.link.url_manager'
