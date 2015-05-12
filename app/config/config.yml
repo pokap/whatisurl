@@ -8,7 +8,7 @@ services:
 parameters:
     user-agent-bot:       'Whatisurlbot'
     user-agent-version:   '0.1'
-    user-agent-full:      '%user-agent-bot%/%user-agent-version% (+http://www.whatisurl.com/#bot)'
+    user-agent-full:      '%user-agent-bot%/%user-agent-version% (+http://whatisurl.net/#bot)'
 
 imports:
     - { resource: parameters.yml }

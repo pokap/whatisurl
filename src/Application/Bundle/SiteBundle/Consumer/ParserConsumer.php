@@ -103,7 +103,7 @@ class ParserConsumer implements ConsumerInterface
         $url->setStatus($url::STATUS_WAITING);
         $this->urlManager->save($url);
 
-        $this->backend->createAndPublish('parse', [
+        $this->backend->createAndPublish('parser', [
             'url'  => (string) $url->getId(),
             'deep' => $deep
         ]);

@@ -29,7 +29,7 @@ class AppController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $strDate = '2015-05-09 14:40:00';
+        $strDate = '2015-05-12 23:00:00';
         $date = new \DateTime($strDate);
 
         $response = new Response();
