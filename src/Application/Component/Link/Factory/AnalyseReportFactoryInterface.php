@@ -13,7 +13,7 @@ use Application\Component\Link\Domain\ProviderInterface;
 interface AnalyseReportFactoryInterface
 {
     /**
-     * Create new instance of link.
+     * Create new instance of analyse report.
      *
      * @param ProviderInterface $provider
      *

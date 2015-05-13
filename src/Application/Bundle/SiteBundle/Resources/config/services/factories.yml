@@ -1,9 +1,12 @@
 services:
+    site.link.analyse_report_factory:
+        class:      Application\Component\Link\Factory\AnalyseReportFactory
+
     site.link.host_factory:
         class:      Application\Component\Link\Factory\HostFactory
 
-    site.link.analyse_report_factory:
-        class:      Application\Component\Link\Factory\AnalyseReportFactory
+    site.link.parser_report_factory:
+        class:      Application\Component\Link\Factory\ParserReportFactory
 
     site.link.robots_factory:
         class:      Application\Bundle\SiteBundle\Factory\RobotsFactory

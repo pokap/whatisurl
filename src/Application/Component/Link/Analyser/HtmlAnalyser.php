@@ -150,7 +150,7 @@ class HtmlAnalyser implements AnalyserInterface, LoggerAwareInterface
                     continue;
                 }
 
-                if (in_array($rel, ['icon', 'shortcut icon'], true)) {
+                if (false !== strpos($rel, 'icon')) {
                     $provider->setIcon($href);
                 }
             }

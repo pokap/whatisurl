@@ -19,7 +19,7 @@ interface ParserInterface
      * @param UriInterface $uri
      * @param float        $timeout (Optional)
      *
-     * @return UrlInterface
+     * @return ParserReportInterface
      *
      * @throws InvalidArgumentException
      */

@@ -148,6 +148,16 @@ class Parser implements ParserInterface
                 $this->analyseContent($link, $timeout);
             }
         }
+
+        // TODO: Adding site factory action
+
+        if ($timeout > 0) {
+            $site = $this->siteFactory->create(gethostbyname($link->getHost()));
+
+            if (!$site->inHost($link->getHost())) {
+                $site->addHost($this->hostFactory->create($link->getHost()));
+            }
+        }
     }
 
     /**
