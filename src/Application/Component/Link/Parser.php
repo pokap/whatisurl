@@ -58,6 +58,11 @@ class Parser implements ParserInterface
     protected $robotsTransformer;
 
     /**
+     * @var RoboxtParser
+     */
+    protected $robotsParser;
+
+    /**
      * @var AnalyserInterface[]
      */
     protected $analysers;
@@ -75,6 +80,7 @@ class Parser implements ParserInterface
      * @param UrlManagerInterface        $urlManager
      * @param RobotsFactoryInterface     $robotsFactory
      * @param RobotsTransformerInterface $robotsTransformer
+     * @param RoboxtParser               $robotsParser
      * @param AnalyserInterface[]        $analysers
      * @param string                     $agent
      */
@@ -84,6 +90,7 @@ class Parser implements ParserInterface
         UrlManagerInterface $urlManager,
         RobotsFactoryInterface $robotsFactory,
         RobotsTransformerInterface $robotsTransformer,
+        RoboxtParser $robotsParser,
         array $analysers,
         $agent)
     {
@@ -92,6 +99,7 @@ class Parser implements ParserInterface
         $this->urlManager = $urlManager;
         $this->robotsFactory = $robotsFactory;
         $this->robotsTransformer = $robotsTransformer;
+        $this->robotsParser = $robotsParser;
         $this->analysers = $analysers;
         $this->agent = $agent;
     }
@@ -154,10 +162,7 @@ class Parser implements ParserInterface
         $robots = $this->robotsFactory->create($link->getHost());
 
         if (null === $robots->getUserAgent()) {
-            $parser = new RoboxtParser();
-
-            /** @var \Roboxt\File $file */
-            $file = $parser->parse($link->getBaseUrl() . '/robots.txt');
+            $file = $this->robotsParser->parse($link->getBaseUrl() . '/robots.txt');
 
             $this->robotsTransformer->transform($robots, $file->getUserAgent($this->agent));
         } else {

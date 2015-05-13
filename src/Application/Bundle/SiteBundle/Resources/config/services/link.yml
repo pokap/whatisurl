@@ -1,4 +1,9 @@
 services:
+    site.link.robots_parser:
+        class:      Application\Bridge\Roboxt\Parser
+        arguments:
+            - '%user-agent-full%'
+
     site.link.parser:
         class:      Application\Component\Link\Parser
         arguments:
@@ -7,12 +12,13 @@ services:
             - '@site.link.url_manager'
             - '@site.link.robots_factory'
             - '@site.link.robots_transformer'
+            - '@site.link.robots_parser'
             - ['@site.link.html_analyser', '@site.link.rss_analyser'] # TODO use compiler pass with TAGs
-            - 'Whatisurlbot'
+            - '%user-agent-bot%'
         calls:
             - ['setLogger', ['@?logger']]
 
     site.link.http_client:
         class:      Application\Component\Link\HttpClient
         arguments:
-            - 'Whatisurlbot/0.1 (+http://www.whatisurl.com/#bot)'
+            - '%user-agent-full%'
