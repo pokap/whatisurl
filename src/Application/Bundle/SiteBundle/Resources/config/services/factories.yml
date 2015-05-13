@@ -1,4 +1,7 @@
 services:
+    site.link.host_factory:
+        class:      Application\Component\Link\Factory\HostFactory
+
     site.link.analyse_report_factory:
         class:      Application\Component\Link\Factory\AnalyseReportFactory
 
@@ -6,6 +9,11 @@ services:
         class:      Application\Bundle\SiteBundle\Factory\RobotsFactory
         arguments:
             - '@site.link.robots_repository'
+
+    site.link.site_factory:
+        class:      Application\Component\Link\Factory\SiteFactory
+        arguments:
+            - '@site.link.site_repository'
 
     site.link.url_factory:
         class:      Application\Bundle\SiteBundle\Factory\UrlFactory

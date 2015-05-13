@@ -11,6 +11,12 @@ services:
             - '@doctrine.odm.mongodb.document_manager'
             - 'Application\Bundle\SiteBundle\Document\Robots'
 
+    site.link.site_repository:
+        class:      Application\Bundle\SiteBundle\Repository\SiteRepository
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - 'Application\Bundle\SiteBundle\Document\Site'
+
     site.link.url_direction_repository:
         class:      Application\Bundle\SiteBundle\Repository\UrlDirectionRepository
         arguments:
