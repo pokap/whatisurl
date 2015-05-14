@@ -13,8 +13,7 @@ class WebArchive extends \Application\Component\Link\Domain\WebArchive implement
     public function jsonSerialize()
     {
         return [
-            'url'           => $this->url,
-            'snapshots'     => $this->snapshots,
+            'snapshots' => $this->snapshots,
         ];
     }
 }

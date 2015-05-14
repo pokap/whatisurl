@@ -4,8 +4,7 @@
 
     <embedded-document name="Application\Bundle\SiteBundle\Document\WebArchive\WebArchive">
 
-        <field fieldName="url"          type="string" />
-        <field fieldName="updatedAt"    type="date"     name="updated_at" />
+        <field fieldName="updatedAt" type="date" name="updated_at" />
 
         <embed-many field="snapshots" target-document="Application\Bundle\SiteBundle\Document\WebArchive\Snapshot" />
 

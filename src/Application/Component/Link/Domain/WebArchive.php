@@ -12,11 +12,6 @@ use WebArchive\Snapshot;
 class WebArchive
 {
     /**
-     * @var string
-     */
-    protected $url;
-
-    /**
      * @var \DateTime
      */
     protected $updatedAt;
@@ -25,26 +20,6 @@ class WebArchive
      * @var Snapshot[]
      */
     protected $snapshots = [];
-
-    /**
-     * Sets the original URL.
-     *
-     * @param string $url
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-    }
-
-    /**
-     * Returns the original URL.
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
 
     /**
      * @param \DateTime $updatedAt
