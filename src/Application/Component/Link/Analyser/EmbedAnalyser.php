@@ -41,14 +41,10 @@ class EmbedAnalyser implements AnalyserInterface
      */
     public function analyse($content, UrlInterface $url)
     {
-        try {
-            $info = Embed::create($this->createRequest($content, $url));
-        } catch (\Exception $e) {
-            echo '<pre>';print $e;die;
-        }
+        $info = Embed::create($this->createRequest($content, $url));
 
         if (false === $info) {
-            throw new AnalyserFailedException(sprintf('Is not'));
+            throw new AnalyserFailedException(sprintf('Url "%s" is not supported.', $url->getUrl()));
         }
 
         return $this->reportFactory->create($this->transform($info));
@@ -57,9 +53,15 @@ class EmbedAnalyser implements AnalyserInterface
     /**
      * {@inheritdoc}
      */
-    public function support($mimeType)
+    public function support($mimeType, $host)
     {
-        return true;
+        $host = array_reverse(explode('.', $host));
+
+        if (class_exists('Embed\\Adapters\\'.ucfirst(strtolower($host[1])))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

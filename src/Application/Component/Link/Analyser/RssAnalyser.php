@@ -72,7 +72,7 @@ class RssAnalyser implements AnalyserInterface
     /**
      * {@inheritdoc}
      */
-    public function support($mimeType)
+    public function support($mimeType, $host)
     {
         return in_array($mimeType, ['text/rss+xml', 'application/rss+xml', 'application/atom+xml']);
     }

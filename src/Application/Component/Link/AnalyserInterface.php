@@ -28,10 +28,11 @@ interface AnalyserInterface
      * Returns that this analyser support the type of link.
      *
      * @param string $mimeType
+     * @param string $host
      *
      * @return bool
      */
-    public function support($mimeType);
+    public function support($mimeType, $host);
 
     /**
      * Returns the format.

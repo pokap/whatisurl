@@ -340,11 +340,11 @@ class Parser implements ParserInterface
         }
 
         foreach ($this->analysers as $analyser) {
-            $support = $analyser->support($link->getHttpHeader()->getContentType());
+            $support = $analyser->support($link->getHttpHeader()->getContentType(), $link->getHost());
             $supportPresumed = false;
 
             if (!$support) {
-                $supportPresumed = $analyser->support($link->getHttpHeader()->getContentTypePresumed());
+                $supportPresumed = $analyser->support($link->getHttpHeader()->getContentTypePresumed(), $link->getHost());
 
                 if (!$supportPresumed) {
                     continue;
