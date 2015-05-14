@@ -23,6 +23,16 @@ class PageProvider implements ProviderInterface
     protected $title;
 
     /**
+     * @var string|null
+     */
+    protected $description;
+
+    /**
+     * @var array|null
+     */
+    protected $keywords;
+
+    /**
      * @var WebArchive|null
      */
     protected $archive;
@@ -65,6 +75,46 @@ class PageProvider implements ProviderInterface
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Returns the description of web page.
+     *
+     * @return null|string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Sets the description of web page.
+     *
+     * @param null|string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * Returns the keywords of web page.
+     *
+     * @return array|null
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * Sets the keywords of web page.
+     *
+     * @param array|null $keywords
+     */
+    public function setKeywords(array $keywords = null)
+    {
+        $this->keywords = $keywords;
     }
 
     /**

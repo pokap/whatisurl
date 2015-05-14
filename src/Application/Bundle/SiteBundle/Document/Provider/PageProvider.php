@@ -13,9 +13,11 @@ class PageProvider extends \Application\Component\Link\Domain\Provider\PageProvi
     public function jsonSerialize()
     {
         return [
-            'icon'      => $this->icon,
-            'title'     => $this->title,
-            'archive'   => $this->archive,
+            'icon'          => $this->icon,
+            'title'         => $this->title,
+            'description'   => $this->description,
+            'keywords'      => $this->keywords,
+            'archive'       => $this->archive,
         ];
     }
 }

@@ -107,9 +107,49 @@ class HtmlAnalyser implements AnalyserInterface, LoggerAwareInterface
         $provider = $report->getProvider();
 
         $x = new \DOMXPath($doc);
-        $entries = $x->query('/html/head/link');
 
-        foreach ($entries as $entry) {
+        foreach ($x->query('/html/head/meta') as $entry) {
+            /** @var \DOMNode $entry */
+            if ($name = $entry->attributes->getNamedItem('name')) {
+                /** @var \DOMAttr $name */
+                $name = (string) $name->value;
+            }
+
+            if (empty($name)) {
+                continue;
+            }
+
+            if ($content = $entry->attributes->getNamedItem('content')) {
+                /** @var \DOMAttr $content */
+                $content = (string) $content->value;
+            }
+
+            if (empty($content)) {
+                continue;
+            }
+
+            switch ($name) {
+                case 'description':
+                    $provider->setDescription($content);
+                    break;
+
+                case 'keywords':
+                    $keywords = array_map('trim', explode(',', $content));
+
+                    foreach ($keywords as $key => $word) {
+                        if (empty($word)) {
+                            unset($keywords[$key]);
+                        }
+                    }
+
+                    if (!empty($keywords)) {
+                        $provider->setKeywords($keywords);
+                    }
+                    break;
+            }
+        }
+
+        foreach ($x->query('/html/head/link') as $entry) {
             /** @var \DOMNode $entry */
             if ($attr = $entry->attributes->getNamedItem('href')) {
                 /** @var \DOMAttr $attr */

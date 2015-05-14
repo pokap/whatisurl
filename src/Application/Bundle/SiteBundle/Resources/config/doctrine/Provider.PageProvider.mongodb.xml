@@ -6,6 +6,8 @@
 
         <field fieldName="icon"         type="string" />
         <field fieldName="title"        type="string" />
+        <field fieldName="description"  type="string" />
+        <field fieldName="keywords"     type="collection" />
 
         <embed-one field="archive" target-document="Application\Bundle\SiteBundle\Document\WebArchive\WebArchive" />
 
