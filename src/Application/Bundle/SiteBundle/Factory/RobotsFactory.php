@@ -36,7 +36,7 @@ class RobotsFactory extends \Application\Component\Link\Factory\RobotsFactory
         if (null !== $robots) {
             $date = (new \DateTime())->sub(new \DateInterval('P1M'));
 
-            if ($robots->getUpdatedAt() > $date) {
+            if ($robots->getUpdatedAt() < $date) {
                 $robots->setUserAgent(null);
                 $robots->setDirectives([]);
             }
