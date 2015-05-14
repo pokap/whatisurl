@@ -28,12 +28,12 @@ interface ParserInterface
     /**
      * Analyse and update the link.
      *
-     * @param UrlInterface $link
-     * @param float        $timeout
+     * @param ParserReportInterface $report
+     * @param float                 $timeout
      *
      * @return void
      *
      * @throws InvalidArgumentException
      */
-    public function update(UrlInterface $link, $timeout = 10.);
+    public function update(ParserReportInterface $report, $timeout = 10.);
 }

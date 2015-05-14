@@ -13,6 +13,8 @@ services:
             - '@site.link.robots_factory'
             - '@site.link.robots_transformer'
             - '@site.link.robots_parser'
+            - '@site.link.site_factory'
+            - '@site.link.parser_report_factory'
             - ['@site.link.html_analyser', '@site.link.rss_analyser'] # TODO use compiler pass with TAGs
             - '%user-agent-bot%'
         calls:

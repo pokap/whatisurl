@@ -16,4 +16,11 @@ interface SiteRepositoryInterface extends ObjectRepository
      * @param Site $site
      */
     public function save(Site $site);
+
+    /**
+     * Returns a site which date the oldest access.
+     *
+     * @return Site|null
+     */
+    public function findOneLastAccess();
 }

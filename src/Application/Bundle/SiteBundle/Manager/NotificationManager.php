@@ -3,6 +3,7 @@
 namespace Application\Bundle\SiteBundle\Manager;
 
 use Application\Bundle\SiteBundle\Repository\NotificationRepositoryInterface;
+use Application\Bundle\SiteBundle\Repository\SiteRepositoryInterface;
 use Sonata\NotificationBundle\Model\MessageInterface;
 use Sonata\NotificationBundle\Model\MessageManagerInterface;
 
@@ -14,16 +15,25 @@ class NotificationManager implements MessageManagerInterface
     /**
      * @var NotificationRepositoryInterface
      */
-    protected $repository;
+    protected $messageRepository;
+
+    /**
+     * @var SiteRepositoryInterface
+     */
+    protected $siteRepository;
 
     /**
      * Constructor.
      *
-     * @param NotificationRepositoryInterface $repository
+     * @param NotificationRepositoryInterface $messageRepository
+     * @param SiteRepositoryInterface         $siteRepository
      */
-    public function __construct(NotificationRepositoryInterface $repository)
+    public function __construct(
+        NotificationRepositoryInterface $messageRepository,
+        SiteRepositoryInterface $siteRepository)
     {
-        $this->repository = $repository;
+        $this->messageRepository = $messageRepository;
+        $this->siteRepository = $siteRepository;
     }
 
     /**
@@ -31,7 +41,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function save($message, $andFlush = true)
     {
-        $this->repository->save($message, $andFlush);
+        $this->messageRepository->save($message, $andFlush);
     }
 
     /**
@@ -39,7 +49,17 @@ class NotificationManager implements MessageManagerInterface
      */
     public function findByTypes(array $types, $state, $batchSize)
     {
-        return $this->repository->findByTypes($types, $state, $batchSize);
+        $hosts = null;
+
+        if ($types === ['parser']) {
+            $batchSize = 1;
+
+            if ($site = $this->siteRepository->findOneLastAccess()) {
+                $hosts = $site->getHosts();
+            }
+        }
+
+        return $this->messageRepository->findByTypes($types, $state, $batchSize, $hosts);
     }
 
     /**
@@ -47,7 +67,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function findByAttempts(array $types, $state, $batchSize, $maxAttempts = null, $attemptDelay = 10)
     {
-        return $this->repository->findByAttempts($types, $state, $batchSize, $maxAttempts, $attemptDelay);
+        return $this->messageRepository->findByAttempts($types, $state, $batchSize, $maxAttempts, $attemptDelay);
     }
 
     /**
@@ -55,7 +75,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function countStates()
     {
-        return $this->repository->countStates();
+        return $this->messageRepository->countStates();
     }
 
     /**
@@ -63,7 +83,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function cleanup($maxAge)
     {
-        $this->repository->cleanup($maxAge);
+        $this->messageRepository->cleanup($maxAge);
     }
 
     /**
@@ -103,7 +123,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function getClass()
     {
-        return $this->repository->getClassName();
+        return $this->messageRepository->getClassName();
     }
 
     /**
@@ -111,7 +131,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function findAll()
     {
-        return $this->repository->findAll();
+        return $this->messageRepository->findAll();
     }
 
     /**
@@ -119,7 +139,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->repository->findBy($criteria, $orderBy, $limit, $offset);
+        return $this->messageRepository->findBy($criteria, $orderBy, $limit, $offset);
     }
 
     /**
@@ -127,7 +147,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function findOneBy(array $criteria, array $orderBy = null)
     {
-        return $this->repository->findOneBy($criteria, $orderBy);
+        return $this->messageRepository->findOneBy($criteria, $orderBy);
     }
 
     /**
@@ -135,7 +155,7 @@ class NotificationManager implements MessageManagerInterface
      */
     public function find($id)
     {
-        return $this->repository->find($id);
+        return $this->messageRepository->find($id);
     }
 
     /**

@@ -9,6 +9,9 @@
         <field fieldName="contentDisposition"    type="string"   name="content_disposition" />
         <field fieldName="contentLanguage"       type="string"   name="content_language" />
         <field fieldName="etag"                  type="string" />
+        <field fieldName="expires"               type="date" />
+        <field fieldName="date"                  type="date" />
+        <field fieldName="lastModified"          type="date"     name="last_modified" />
         <field fieldName="lastModified"          type="date"     name="last_modified" />
         <field fieldName="statusCode"            type="int"      name="status_code"/>
 

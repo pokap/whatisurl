@@ -17,7 +17,7 @@ class Site implements SiteInterface
     protected $ip;
 
     /**
-     * @var HostInterface[]
+     * @var string[]
      */
     protected $hosts = [];
 
@@ -44,10 +44,10 @@ class Site implements SiteInterface
     /**
      * {@inheritdoc}
      */
-    public function addHost(HostInterface $host)
+    public function addHost($host)
     {
-        if ($this->inHost((string) $host)) {
-            throw new InvalidArgumentException(sprintf('Host "%s" already registred.', (string) $host));
+        if ($this->inHost($host)) {
+            return;
         }
 
         $this->hosts[] = $host;
@@ -58,13 +58,7 @@ class Site implements SiteInterface
      */
     public function inHost($host)
     {
-        foreach ($this->hosts as $siteHost) {
-            if (strval($siteHost) === $host) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array((string) $host, $this->hosts);
     }
 
     /**

@@ -6,6 +6,7 @@ use Application\Bundle\SiteBundle\Document\Url;
 use Application\Bundle\SiteBundle\Document\UrlDirection;
 use Application\Bundle\SiteBundle\Manager\UrlDirectionManager;
 use Application\Bundle\SiteBundle\Manager\UrlManager;
+use Application\Bundle\SiteBundle\Repository\SiteRepositoryInterface;
 use Application\Component\Link\ParserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -71,11 +72,13 @@ class AppController extends Controller
         }
 
         try {
-            /** @var Url $url */
-            $url = $this->getParser()->parse($uri);
+            $report = $this->getParser()->parse($uri);
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
+
+        /** @var Url $url */
+        $url = $report->getUrl();
 
         $this->getUrlManager()->save($url);
 
@@ -83,6 +86,10 @@ class AppController extends Controller
             $this->getBackend()->createAndPublish('web_archive', [
                 'url' => (string) $url->getId(),
             ]);
+        }
+
+        if (null !== $report->getSite()) {
+            $this->getSiteRepository()->save($report->getSite());
         }
 
         /** @var Url $out */
@@ -158,6 +165,16 @@ class AppController extends Controller
     private function getUrlManager()
     {
         return $this->container->get('site.link.url_manager');
+    }
+
+    /**
+     * Returns the site repository.
+     *
+     * @return SiteRepositoryInterface
+     */
+    private function getSiteRepository()
+    {
+        return $this->container->get('site.link.site_repository');
     }
 
     /**

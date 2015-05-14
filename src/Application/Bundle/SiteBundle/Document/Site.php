@@ -13,6 +13,11 @@ class Site extends \Application\Component\Link\Domain\Site
     protected $id;
 
     /**
+     * @var \DateTime
+     */
+    protected $lastAccessAt;
+
+    /**
      * Returns the document ID.
      *
      * @return string
@@ -20,5 +25,25 @@ class Site extends \Application\Component\Link\Domain\Site
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Returns the last access.
+     *
+     * @return \DateTime
+     */
+    public function getLastAccessAt()
+    {
+        return $this->lastAccessAt;
+    }
+
+    /**
+     * Sets the last access.
+     *
+     * @param \DateTime $lastAccessAt
+     */
+    public function setLastAccessAt($lastAccessAt)
+    {
+        $this->lastAccessAt = $lastAccessAt;
     }
 }

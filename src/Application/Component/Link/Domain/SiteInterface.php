@@ -30,11 +30,9 @@ interface SiteInterface
     /**
      * Adding a host when young found one.
      *
-     * @param HostInterface $host
-     *
-     * @throws InvalidArgumentException When host already exists
+     * @param string $host
      */
-    public function addHost(HostInterface $host);
+    public function addHost($host);
 
     /**
      * Checks if a host exists in an hosts list.
@@ -48,7 +46,7 @@ interface SiteInterface
     /**
      * Returns list of hosts.
      *
-     * @return HostInterface[]
+     * @return string[]
      */
     public function getHosts();
 }

@@ -8,9 +8,9 @@
 
         <field name="id" id="true" />
 
-        <field fieldName="ip"   type="string" />
-
-        <embed-many field="hosts" target-document="Application\Bundle\SiteBundle\Document\Host" />
+        <field fieldName="ip"           type="string" />
+        <field fieldName="hosts"        type="collection" />
+        <field fieldName="lastAccessAt" type="date"       name="last_access_at" />
 
         <indexes>
             <index name="site_ip">

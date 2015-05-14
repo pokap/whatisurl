@@ -17,5 +17,11 @@ sonata_notification:
                 open:               100
                 done:               10000
 
+    queues:
+        # DOCTRINE CONFIGURATION
+        - { queue: parser,        types: [parser] }
+        - { queue: web_archive,   types: [web_archive] }
+        - { queue: catchall,      default: true }
+
     consumers:
         register_default:   false

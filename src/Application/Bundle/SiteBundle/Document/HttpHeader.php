@@ -20,6 +20,8 @@ class HttpHeader extends \Application\Component\Link\Domain\HttpHeader implement
             'content_disposition'       => $this->contentDisposition,
             'content_language'          => $this->contentLanguage,
             'etag'                      => $this->etag,
+            'expires'                   => $this->expires,
+            'date'                      => $this->date,
             'last_modified'             => $this->lastModified? $this->lastModified->format(DATE_ISO8601) : null,
             'status_code'               => $this->statusCode,
         ];

@@ -40,9 +40,13 @@ class NotificationRepository extends DocumentRepository implements NotificationR
     /**
      * {@inheritDoc}
      */
-    public function findByTypes(array $types, $state, $batchSize)
+    public function findByTypes(array $types, $state, $batchSize, array $hosts = null)
     {
         $builder = $this->prepareStateQuery($state, $types, $batchSize);
+
+        if (null !== $hosts) {
+            $builder->field('hosts')->in($hosts);
+        }
 
         return $builder->getQuery()->toArray();
     }
@@ -122,14 +126,12 @@ class NotificationRepository extends DocumentRepository implements NotificationR
         if (!empty($types)) {
             if (isset($types['exclude']) || isset($types['include'])) {
                 if (isset($types['exclude'])) {
-                    $query->field('type')->notIn($types['exclude']);
+                    $query->field('type')->notIn((array) $types['exclude']);
                 } else {
-                    $query->field('type')->in($types['include']);
+                    $query->field('type')->in((array) $types['include']);
                 }
             } else { // BC
-                if (isset($types['exclude'])) {
-                    $query->field('type')->in($types);
-                }
+                $query->field('type')->in($types);
             }
         }
 

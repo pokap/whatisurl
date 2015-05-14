@@ -14,7 +14,9 @@ namespace Application\Component\Link;
 use Application\Component\Link\Domain\HttpHeaderInterface;
 use Application\Component\Link\Domain\UrlInterface;
 use Application\Component\Link\Exception\AnalyserFailedException;
+use Application\Component\Link\Factory\ParserReportFactoryInterface;
 use Application\Component\Link\Factory\RobotsFactoryInterface;
+use Application\Component\Link\Factory\SiteFactoryInterface;
 use Application\Component\Link\Factory\UrlFactoryInterface;
 use Application\Component\Link\Manager\UrlManagerInterface;
 use Application\Component\Link\Transformer\RobotsTransformerInterface;
@@ -63,6 +65,16 @@ class Parser implements ParserInterface
     protected $robotsParser;
 
     /**
+     * @var SiteFactoryInterface
+     */
+    protected $siteFactory;
+
+    /**
+     * @var ParserReportFactoryInterface
+     */
+    protected $parserReportFactory;
+
+    /**
      * @var AnalyserInterface[]
      */
     protected $analysers;
@@ -75,14 +87,16 @@ class Parser implements ParserInterface
     /**
      * Constructor.
      *
-     * @param HttpClientInterface        $client
-     * @param UrlFactoryInterface        $urlFactory
-     * @param UrlManagerInterface        $urlManager
-     * @param RobotsFactoryInterface     $robotsFactory
-     * @param RobotsTransformerInterface $robotsTransformer
-     * @param RoboxtParser               $robotsParser
-     * @param AnalyserInterface[]        $analysers
-     * @param string                     $agent
+     * @param HttpClientInterface          $client
+     * @param UrlFactoryInterface          $urlFactory
+     * @param UrlManagerInterface          $urlManager
+     * @param RobotsFactoryInterface       $robotsFactory
+     * @param RobotsTransformerInterface   $robotsTransformer
+     * @param RoboxtParser                 $robotsParser
+     * @param SiteFactoryInterface         $siteFactory
+     * @param ParserReportFactoryInterface $parserReportFactory
+     * @param AnalyserInterface[]          $analysers
+     * @param string                       $agent
      */
     public function __construct(
         HttpClientInterface $client,
@@ -91,6 +105,8 @@ class Parser implements ParserInterface
         RobotsFactoryInterface $robotsFactory,
         RobotsTransformerInterface $robotsTransformer,
         RoboxtParser $robotsParser,
+        SiteFactoryInterface $siteFactory,
+        ParserReportFactoryInterface $parserReportFactory,
         array $analysers,
         $agent)
     {
@@ -100,6 +116,8 @@ class Parser implements ParserInterface
         $this->robotsFactory = $robotsFactory;
         $this->robotsTransformer = $robotsTransformer;
         $this->robotsParser = $robotsParser;
+        $this->siteFactory = $siteFactory;
+        $this->parserReportFactory = $parserReportFactory;
         $this->analysers = $analysers;
         $this->agent = $agent;
     }
@@ -109,23 +127,60 @@ class Parser implements ParserInterface
      */
     public function parse(UriInterface $uri, $timeout = 10.)
     {
-        $link = $this->urlFactory->create($uri);
+        $report = $this->parserReportFactory->create($this->urlFactory->create($uri));
 
-        $this->update($link, $timeout);
+        $this->update($report, $timeout);
 
-        return $link;
+        return $report;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function update(UrlInterface $link, $timeout = 10.)
+    public function update(ParserReportInterface $report, $timeout = 10.)
     {
+        $link = $report->getUrl();
         $startTime = microtime(true);
+
+        // Host is not an IP ?
+        if (filter_var($link->getHost(), FILTER_VALIDATE_IP) !== false) {
+            $site = $report->getSite();
+            if (null === $site) {
+                $site = $this->siteFactory->create($link->getHost());
+            }
+
+            $report->setSite($site);
+        } else {
+            $ip = gethostbyname($link->getHost());
+
+            // not found
+            if ($ip === $link->getHost()) {
+                $this->initHttpHeader($link, 404);
+
+                return;
+            }
+
+            if ($timeout > 0) {
+                $site = $report->getSite();
+
+                if (null === $site) {
+                    $site = $this->siteFactory->create($ip);
+                }
+
+                $site->addHost($link->getHost());
+
+                $report->setSite($site);
+            }
+
+            $timeout -= microtime(true) - $startTime;
+            if ($timeout <= 0) {
+                return;
+            }
+        }
 
         // TODO: move to directive
         if (in_array($link->getSchema(), ['http', 'https'])) {
-            $file = $this->retrieveRobotstxt($link);
+            $file = $this->retrieveRobotstxt($report);
 
             if (0 < count($file->allUserAgents()) && !$file->isUrlAllowedByUserAgent($link->getPath(), $this->agent)) {
                 $this->initHttpHeader($link, 403);
@@ -134,41 +189,36 @@ class Parser implements ParserInterface
             }
 
             $timeout -= microtime(true) - $startTime;
-        }
-
-        if ($timeout > 0) {
-            $continue = $this->requestHead($link, $timeout);
-            if (false === $continue) {
+            if ($timeout <= 0) {
                 return;
             }
-
-            $timeout -= microtime(true) - $startTime;
-
-            if ($timeout > 0 && $this->urlManager->isSuccess($link)) {
-                $this->analyseContent($link, $timeout);
-            }
         }
 
-        // TODO: Adding site factory action
+        $continue = $this->requestHead($link, $timeout);
+        if (false === $continue) {
+            return;
+        }
 
-        if ($timeout > 0) {
-            $site = $this->siteFactory->create(gethostbyname($link->getHost()));
+        $timeout -= microtime(true) - $startTime;
+        if ($timeout <= 0) {
+            return;
+        }
 
-            if (!$site->inHost($link->getHost())) {
-                $site->addHost($this->hostFactory->create($link->getHost()));
-            }
+        if ($timeout > 0 && $this->urlManager->isSuccess($link)) {
+            $this->analyseContent($link, $timeout);
         }
     }
 
     /**
      * Retrieve the robotstxt.
      *
-     * @param UrlInterface $link
+     * @param ParserReportInterface $report
      *
      * @return \Roboxt\File
      */
-    protected function retrieveRobotstxt(UrlInterface $link)
+    protected function retrieveRobotstxt(ParserReportInterface $report)
     {
+        $link = $report->getUrl();
         $robots = $this->robotsFactory->create($link->getHost());
 
         if (null === $robots->getUserAgent()) {
@@ -180,6 +230,8 @@ class Parser implements ParserInterface
 
             $this->robotsTransformer->reverseTransform($file, $robots);
         }
+
+        $report->setRobots($robots);
 
         return $file;
     }
@@ -234,6 +286,20 @@ class Parser implements ParserInterface
             $language = $response->getHeaders()->get('Content-Language');
 
             $linkHeader->setContentLanguage($language->getFieldValue());
+        }
+
+        if ($response->getHeaders()->has('Expires')) {
+            /** @var \Zend\Http\Header\Expires $expires */
+            $expires = $response->getHeaders()->get('Expires');
+
+            $linkHeader->setExpires($expires->date());
+        }
+
+        if ($response->getHeaders()->has('Date')) {
+            /** @var \Zend\Http\Header\Date $date */
+            $date = $response->getHeaders()->get('Date');
+
+            $linkHeader->setDate($date->date());
         }
 
         if ($response->isRedirect() && $response->getHeaders()->has('Location')) {

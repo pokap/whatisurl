@@ -2,8 +2,11 @@
 
 namespace Application\Bundle\SiteBundle\Consumer;
 
+use Application\Bundle\SiteBundle\Document\Site;
 use Application\Bundle\SiteBundle\Document\Url;
 use Application\Bundle\SiteBundle\Manager\UrlManager;
+use Application\Bundle\SiteBundle\Repository\SiteRepositoryInterface;
+use Application\Component\Link\Factory\ParserReportFactoryInterface;
 use Application\Component\Link\ParserInterface;
 use Sonata\NotificationBundle\Backend\BackendInterface;
 use Sonata\NotificationBundle\Consumer\ConsumerEvent;
@@ -23,9 +26,19 @@ class ParserConsumer implements ConsumerInterface
     protected $parser;
 
     /**
+     * @var ParserReportFactoryInterface
+     */
+    protected $parserReportFactory;
+
+    /**
      * @var UrlManager
      */
     protected $urlManager;
+
+    /**
+     * @var SiteRepositoryInterface
+     */
+    protected $siteRepository;
 
     /**
      * @var BackendInterface
@@ -35,14 +48,23 @@ class ParserConsumer implements ConsumerInterface
     /**
      * Constructor.
      *
-     * @param ParserInterface  $parser
-     * @param UrlManager       $urlManager
-     * @param BackendInterface $backend
+     * @param ParserInterface              $parser
+     * @param ParserReportFactoryInterface $parserReportFactory
+     * @param UrlManager                   $urlManager
+     * @param SiteRepositoryInterface      $siteRepository
+     * @param BackendInterface             $backend
      */
-    public function __construct(ParserInterface $parser, UrlManager $urlManager, BackendInterface $backend)
+    public function __construct(
+        ParserInterface $parser,
+        ParserReportFactoryInterface $parserReportFactory,
+        UrlManager $urlManager,
+        SiteRepositoryInterface $siteRepository,
+        BackendInterface $backend)
     {
         $this->parser = $parser;
+        $this->parserReportFactory = $parserReportFactory;
         $this->urlManager = $urlManager;
+        $this->siteRepository = $siteRepository;
         $this->backend = $backend;
     }
 
@@ -62,23 +84,50 @@ class ParserConsumer implements ConsumerInterface
 
         if (!$this->canBeUpdate($url)) {
             $returnInfo->setReturnMessage(sprintf('Url "%s" ("%s") not update!', $url->getUrl(), $url->getId()));
-            return;
+        } else {
+            /** @var Site|null $site */
+            $site = $this->siteRepository->findOneBy(['hosts' => ['$in' => [$url->getHost()]]]);
+
+            // wait 15 sec
+            $sleep = 15;
+
+            $report = $this->parserReportFactory->create($url);
+
+            if (null !== $site) {
+                $interval = $site->getLastAccessAt()->diff(new \DateTime());
+
+                if ($interval->s >= $sleep) {
+                    $sleep = 0;
+                } else {
+                    $sleep -= $interval->s;
+                }
+
+                $report->setSite($site);
+            }
+
+            // wait 15 seconds before send a request
+            sleep($sleep);
+
+            $this->parser->update($report);
+
+            $url->setStatus($url::STATUS_COMPLETED);
+
+            if ($url->hasProvider('page')) {
+                $this->backend->createAndPublish('web_archive', [
+                    'url' => (string) $url->getId(),
+                ]);
+            }
+
+            $this->urlManager->save($url);
+
+            if (null !== $report->getSite()) {
+                $site = $report->getSite();
+
+                $this->siteRepository->save($site);
+            }
+
+            $returnInfo->setReturnMessage(sprintf("ID: %s\nURL: %s", $url->getId(), $url->getUrl()));
         }
-
-        // wait 15 seconds before send a request
-        sleep(15);
-
-        $this->parser->update($url);
-
-        $url->setStatus($url::STATUS_COMPLETED);
-
-        if ($url->hasProvider('page')) {
-            $this->backend->createAndPublish('web_archive', [
-                'url' => (string) $url->getId(),
-            ]);
-        }
-
-        $this->urlManager->save($url);
 
         $deep = $message->getValue('deep', 0);
         if ($deep > 0) {
@@ -88,8 +137,6 @@ class ParserConsumer implements ConsumerInterface
                 $this->async($subUrl, $deep);
             }
         }
-
-        $returnInfo->setReturnMessage(sprintf("ID: %s\nURL: %s", $url->getId(), $url->getUrl()));
     }
 
     /**

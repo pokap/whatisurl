@@ -27,7 +27,20 @@ class SiteRepository extends DocumentRepository implements SiteRepositoryInterfa
      */
     public function save(Site $site)
     {
+        $site->setLastAccessAt(new \DateTime());
+
         $this->dm->persist($site);
         $this->dm->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneLastAccess()
+    {
+        $qb = $this->createQueryBuilder();
+        $qb->sort('lastAccessAt', -1);
+
+        return $qb->getQuery()->getSingleResult();
     }
 }

@@ -4,7 +4,9 @@ services:
         tags:       [{ name: sonata.notification.consumer, type: parser }]
         arguments:
             - '@site.link.parser'
+            - '@site.link.parser_report_factory'
             - '@site.link.url_manager'
+            - '@site.link.site_repository'
             - '@sonata.notification.backend'
 
     site.link.web_archive_consumer:

@@ -80,6 +80,34 @@ interface HttpHeaderInterface
     public function getEtag();
 
     /**
+     * Returns the expires.
+     *
+     * @return \DateTime|null
+     */
+    public function getExpires();
+
+    /**
+     * Sets the expires.
+     *
+     * @param \DateTime|null $expires
+     */
+    public function setExpires(\DateTime $expires = null);
+
+    /**
+     * Returns the date.
+     *
+     * @return \DateTime|null
+     */
+    public function getDate();
+
+    /**
+     * Sets the date.
+     *
+     * @param \DateTime|null $date
+     */
+    public function setDate(\DateTime $date = null);
+
+    /**
      * Returns the last-modified content.
      *
      * @return \DateTime|null

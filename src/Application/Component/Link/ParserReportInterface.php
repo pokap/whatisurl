@@ -23,7 +23,7 @@ interface ParserReportInterface
     /**
      * Returns the robots directive.
      *
-     * @return RobotsInterface
+     * @return RobotsInterface|null
      */
     public function getRobots();
 
@@ -37,7 +37,7 @@ interface ParserReportInterface
     /**
      * Returns the site information.
      *
-     * @return SiteInterface
+     * @return SiteInterface|null
      */
     public function getSite();
 

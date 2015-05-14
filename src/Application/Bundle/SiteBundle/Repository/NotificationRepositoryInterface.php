@@ -18,13 +18,16 @@ interface NotificationRepositoryInterface extends ObjectRepository
     public function save(Notification $notification);
 
     /**
-     * @param array   $types
-     * @param integer $state
-     * @param integer $batchSize
+     * Returns list of messages.
+     *
+     * @param array      $types
+     * @param integer    $state
+     * @param integer    $batchSize
+     * @param array|null $hosts
      *
      * @return []MessageInterface
      */
-    public function findByTypes(array $types, $state, $batchSize);
+    public function findByTypes(array $types, $state, $batchSize, array $hosts = null);
 
     /**
      * @param array $types

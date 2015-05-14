@@ -37,6 +37,16 @@ class HttpHeader implements HttpHeaderInterface
     /**
      * @var \DateTime|null
      */
+    protected $expires;
+
+    /**
+     * @var \DateTime|null
+     */
+    protected $date;
+
+    /**
+     * @var \DateTime|null
+     */
     protected $lastModified;
 
     /**
@@ -122,6 +132,38 @@ class HttpHeader implements HttpHeaderInterface
     public function getEtag()
     {
         return $this->etag;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExpires()
+    {
+        return $this->expires;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExpires(\DateTime $expires = null)
+    {
+        $this->expires = $expires;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDate(\DateTime $date = null)
+    {
+        $this->date = $date;
     }
 
     /**

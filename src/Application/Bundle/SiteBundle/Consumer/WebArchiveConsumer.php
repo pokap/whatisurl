@@ -67,6 +67,9 @@ class WebArchiveConsumer implements ConsumerInterface
             $page->setArchive($archive = new WebArchive());
         }
 
+        // wait 15 seconds before send a request
+        sleep(15);
+
         $snapshots = $archive->getSnapshots();
         foreach ($this->getSnapshots($url, $archive) as $item) {
             $snapshots[] = $this->transformSnapshot($item);
