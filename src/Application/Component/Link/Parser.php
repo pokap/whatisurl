@@ -23,6 +23,7 @@ use Application\Component\Link\Transformer\RobotsTransformerInterface;
 use Application\Bridge\Roboxt\Parser as RoboxtParser;
 use Psr\Log\LoggerAwareTrait;
 use Roboxt\File;
+use Symfony\Component\HttpFoundation\Response;
 use Zend\Uri\UriInterface;
 
 /**
@@ -247,7 +248,7 @@ class Parser implements ParserInterface
     protected function requestHead(UrlInterface $link, $timeout = 10.)
     {
         $response = $this->client->head($link, $timeout);
-        if (304 === $response->getStatusCode()) {
+        if (Response::HTTP_NOT_MODIFIED === $response->getStatusCode()) {
             return false;
         }
 
@@ -324,9 +325,10 @@ class Parser implements ParserInterface
      */
     protected function analyseContent(UrlInterface $link, $timeout = 10.)
     {
-//        sleep(1);
-
         $response = $this->client->get($link, $timeout);
+        if (Response::HTTP_NOT_MODIFIED === $response->getStatusCode()) {
+            return false;
+        }
 
         foreach ($this->analysers as $analyser) {
             $support = $analyser->support($link->getHttpHeader()->getContentType());

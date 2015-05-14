@@ -31,7 +31,7 @@ set :assets_install,        false
 set :dump_assetic_assets,   false
 set :use_composer,          true
 
-set :composer_options, "--optimize-autoloader"
+set :composer_options, "--optimize-autoloader --no-dev"
 
 before "deploy", "check_releases"
 before "deploy:update_code", "check_releases"

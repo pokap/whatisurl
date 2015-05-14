@@ -48,7 +48,14 @@ class HttpClient implements HttpClientInterface
      */
     public function get(UrlInterface $url, $timeout = 10)
     {
-        return $this->send($url->getUrl(), $timeout);
+        $request = null;
+
+        if ($headers = $this->createRequestHeaders($url)) {
+            $request = new Request();
+            $request->setHeaders($headers);
+        }
+
+        return $this->send($url->getUrl(), $timeout, false, $request);
     }
 
     /**
@@ -56,14 +63,9 @@ class HttpClient implements HttpClientInterface
      */
     public function head(UrlInterface $url, $timeout = 10)
     {
-        $header = $url->getHttpHeader();
         $request = null;
 
-        if (null !== $header && null !== $header->getLastModified() && null !== $header->getEtag()) {
-            $headers = new Headers();
-            $headers->addHeader(new IfModifiedSince($header->getLastModified()));
-            $headers->addHeader(new IfNoneMatch($header->getEtag()));
-
+        if ($headers = $this->createRequestHeaders($url)) {
             $request = new Request();
             $request->setHeaders($headers);
         }
@@ -95,5 +97,32 @@ class HttpClient implements HttpClientInterface
         $adapter->setCurlOption(CURLOPT_FOLLOWLOCATION, false);
 
         return $this->client->send();
+    }
+
+    /**
+     * Create headers list for the request.
+     *
+     * @param UrlInterface $url
+     *
+     * @return Headers|null
+     */
+    protected function createRequestHeaders(UrlInterface $url)
+    {
+        $header = $url->getHttpHeader();
+        if (null === $header) {
+            return null;
+        }
+
+        $headers = new Headers();
+
+        if (null !== $header->getLastModified()) {
+            $headers->addHeader(new IfModifiedSince($header->getLastModified()));
+        }
+
+        if (null !== $header->getEtag()) {
+            $headers->addHeader(new IfNoneMatch($header->getEtag()));
+        }
+
+        return $headers;
     }
 }
