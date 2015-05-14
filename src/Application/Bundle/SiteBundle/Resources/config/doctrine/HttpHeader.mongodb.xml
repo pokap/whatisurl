@@ -8,6 +8,7 @@
         <field fieldName="contentTypePresumed"   type="string"   name="content_type_presumed" />
         <field fieldName="contentDisposition"    type="string"   name="content_disposition" />
         <field fieldName="contentLanguage"       type="string"   name="content_language" />
+        <field fieldName="contentMD5"            type="string"   name="content_md5" />
         <field fieldName="etag"                  type="string" />
         <field fieldName="expires"               type="date" />
         <field fieldName="date"                  type="date" />

@@ -66,6 +66,20 @@ interface HttpHeaderInterface
     public function getContentLanguage();
 
     /**
+     * Returns the content md5.
+     *
+     * @return string
+     */
+    public function getContentMD5();
+
+    /**
+     * Sets the content md5.
+     *
+     * @param string $md5
+     */
+    public function setContentMD5($md5);
+
+    /**
      * Sets the etag.
      *
      * @param string|null $etag

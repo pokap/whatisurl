@@ -289,6 +289,13 @@ class Parser implements ParserInterface
             $linkHeader->setContentLanguage($language->getFieldValue());
         }
 
+        if ($response->getHeaders()->has('Content-MD5')) {
+            /** @var \Zend\Http\Header\ContentMD5 $md5 */
+            $md5 = $response->getHeaders()->get('Content-MD5');
+
+            $linkHeader->setContentMD5($md5->getFieldValue());
+        }
+
         if ($response->getHeaders()->has('Expires')) {
             /** @var \Zend\Http\Header\Expires $expires */
             $expires = $response->getHeaders()->get('Expires');
@@ -322,6 +329,8 @@ class Parser implements ParserInterface
      *
      * @param UrlInterface $link
      * @param float        $timeout (Optional)
+     *
+     * @return bool
      */
     protected function analyseContent(UrlInterface $link, $timeout = 10.)
     {
@@ -361,6 +370,8 @@ class Parser implements ParserInterface
             $link->addProvider($report->getProvider());
             $link->addOutUrls($report->getUrlsFound());
         }
+
+        return true;
     }
 
     /**

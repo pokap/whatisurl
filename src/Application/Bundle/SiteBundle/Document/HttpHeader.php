@@ -19,6 +19,7 @@ class HttpHeader extends \Application\Component\Link\Domain\HttpHeader implement
             'content_type_presumed'     => $this->contentTypePresumed,
             'content_disposition'       => $this->contentDisposition,
             'content_language'          => $this->contentLanguage,
+            'content_md5'               => $this->contentMD5,
             'etag'                      => $this->etag,
             'expires'                   => $this->expires,
             'date'                      => $this->date,

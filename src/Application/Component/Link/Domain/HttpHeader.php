@@ -32,6 +32,11 @@ class HttpHeader implements HttpHeaderInterface
     /**
      * @var string|null
      */
+    protected $contentMD5;
+
+    /**
+     * @var string|null
+     */
     protected $etag;
 
     /**
@@ -116,6 +121,22 @@ class HttpHeader implements HttpHeaderInterface
     public function getContentLanguage()
     {
         return $this->contentLanguage;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContentMD5()
+    {
+        return $this->contentMD5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContentMD5($md5)
+    {
+        $this->contentMD5 = (null === $md5)? null : (string) $md5;
     }
 
     /**
