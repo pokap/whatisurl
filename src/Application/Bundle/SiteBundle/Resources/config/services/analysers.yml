@@ -1,4 +1,9 @@
 services:
+    site.link.embed_analyser:
+        class:      Application\Bundle\SiteBundle\Analyser\EmbedAnalyser
+        arguments:
+            - '@site.link.analyse_report_factory'
+
     site.link.html_analyser:
         class:      Application\Bundle\SiteBundle\Analyser\HtmlAnalyser
         arguments:

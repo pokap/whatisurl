@@ -15,7 +15,7 @@ services:
             - '@site.link.robots_parser'
             - '@site.link.site_factory'
             - '@site.link.parser_report_factory'
-            - ['@site.link.html_analyser', '@site.link.rss_analyser'] # TODO use compiler pass with TAGs
+            - ['@site.link.html_analyser', '@site.link.rss_analyser', '@site.link.embed_analyser'] # TODO use compiler pass with TAGs
             - '%user-agent-bot%'
         calls:
             - ['setLogger', ['@?logger']]

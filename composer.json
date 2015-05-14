@@ -20,6 +20,7 @@
         "zendframework/zend-feed": "2.4.*",
         "pokap/webarchive": "dev-master@dev",
 
+        "embed/embed": "2.2.*",
         "m6web/roboxt": "~1.1"
     },
     "require-dev": {

@@ -108,7 +108,7 @@ class ParserConsumer implements ConsumerInterface
             // wait 15 seconds before send a request
             sleep($sleep);
 
-            $this->parser->update($report);
+            $this->parser->update($report, 300);
 
             $url->setStatus($url::STATUS_COMPLETED);
 

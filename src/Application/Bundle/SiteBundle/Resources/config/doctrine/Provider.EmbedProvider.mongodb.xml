@@ -1,0 +1,28 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <embedded-document name="Application\Bundle\SiteBundle\Document\Provider\EmbedProvider">
+
+        <field fieldName="title"            type="string" />
+        <field fieldName="description"      type="string" />
+        <field fieldName="url"              type="string" />
+        <field fieldName="type"             type="string" />
+        <field fieldName="image"            type="string" />
+        <field fieldName="imageWidth"       type="int"    name="image_width" />
+        <field fieldName="imageHeight"      type="int"    name="image_height" />
+        <field fieldName="images"           type="hash" />
+        <field fieldName="code"             type="string" />
+        <field fieldName="width"            type="int" />
+        <field fieldName="height"           type="int" />
+        <field fieldName="authorName"       type="string" name="author_name" />
+        <field fieldName="authorUrl"        type="string" name="author_url" />
+        <field fieldName="providerIcon"     type="string" name="provider_icon" />
+        <field fieldName="providerIcons"    type="hash"   name="provider_icons" />
+        <field fieldName="providerName"     type="string" name="provider_name" />
+        <field fieldName="providerUrl"      type="string" name="provider_url" />
+        <field fieldName="publishedTime"    type="string" name="published_time" />
+
+    </embedded-document>
+
+</doctrine-mongo-mapping>
