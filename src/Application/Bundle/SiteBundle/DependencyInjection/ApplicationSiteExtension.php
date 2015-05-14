@@ -39,13 +39,18 @@ class ApplicationSiteExtension extends Extension
             'Application\\Component\\Link\\Domain\\HttpHeaderInterface',
 
             // factories
+            'Application\\Bundle\\SiteBundle\\Factory\\SiteFactory',
             'Application\\Bundle\\SiteBundle\\Factory\\UrlFactory',
+            'Application\\Component\\Link\\Factory\\SiteFactory',
+            'Application\\Component\\Link\\Factory\\SiteFactoryInterface',
             'Application\\Component\\Link\\Factory\\UrlFactory',
             'Application\\Component\\Link\\Factory\\UrlFactoryInterface',
 
             // managers
             'Application\\Bundle\\SiteBundle\\Manager\\UrlManager',
             'Application\\Bundle\\SiteBundle\\Manager\\UrlDirectionManager',
+            'Application\\Bundle\\SiteBundle\\Repository\\SiteRepository',
+            'Application\\Bundle\\SiteBundle\\Repository\\SiteRepositoryInterface',
             'Application\\Bundle\\SiteBundle\\Repository\\UrlRepository',
             'Application\\Bundle\\SiteBundle\\Repository\\UrlRepositoryInterface',
             'Application\\Bundle\\SiteBundle\\Repository\\UrlDirectionRepository',

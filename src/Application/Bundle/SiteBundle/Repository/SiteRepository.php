@@ -32,16 +32,4 @@ class SiteRepository extends DocumentRepository implements SiteRepositoryInterfa
         $this->dm->persist($site);
         $this->dm->flush();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneLastAccess()
-    {
-        $qb = $this->createQueryBuilder();
-        $qb->field('lastAccessAt')->lt((new \DateTime())->sub(new \DateInterval('PT5S')));
-        $qb->sort('lastAccessAt', -1);
-
-        return $qb->getQuery()->getSingleResult();
-    }
 }

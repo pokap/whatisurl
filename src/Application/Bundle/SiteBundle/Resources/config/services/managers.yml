@@ -15,4 +15,3 @@ services:
         class:      Application\Bundle\SiteBundle\Manager\NotificationManager
         arguments:
             - '@site.notification.repository'
-            - '@site.link.site_repository'

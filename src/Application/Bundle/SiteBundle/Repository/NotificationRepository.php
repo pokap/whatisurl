@@ -40,13 +40,9 @@ class NotificationRepository extends DocumentRepository implements NotificationR
     /**
      * {@inheritDoc}
      */
-    public function findByTypes(array $types, $state, $batchSize, array $hosts = null)
+    public function findByTypes(array $types, $state, $batchSize)
     {
         $builder = $this->prepareStateQuery($state, $types, $batchSize);
-
-        if (null !== $hosts) {
-            $builder->field('hosts')->in($hosts);
-        }
 
         return $builder->getQuery()->toArray();
     }
