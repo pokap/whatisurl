@@ -21,8 +21,12 @@ var path = function (mini) {
                     return;
                 }
 
+                blockInputs(true);
+
                 var xhr = $http.get(path('search') + '?url=' + search.url);
                 xhr.success(function(data, status) {
+                    blockInputs(false);
+
                     // initialize
                     showError();
 
@@ -32,6 +36,8 @@ var path = function (mini) {
                     }
                 });
                 xhr.error(function(data, status) {
+                    blockInputs(false);
+
                     output.innerHTML = '';
 
                     if (400 === status) {
@@ -42,6 +48,17 @@ var path = function (mini) {
         }
     ]);
 
+    function getElement(id) {
+        return document.getElementById(id);
+    }
+
+    function blockInputs(disable) {
+        disable = !!disable;
+
+        getElement('input-url').disabled = disable;
+        getElement('button-search').disabled = disable;
+    }
+
     function showError(message) {
         if (undefined === message) {
             message = '';
@@ -49,7 +66,7 @@ var path = function (mini) {
             message = '<div class="alert alert-warning" role="alert">' + message + '</div>';
         }
 
-        document.getElementById('message-error').innerHTML = message;
+        getElement('message-error').innerHTML = message;
     }
 
     function validUrl(str) {
