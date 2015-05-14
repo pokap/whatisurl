@@ -7,8 +7,7 @@ use Application\Component\Link\Domain\Provider\EmbedProvider;
 use Application\Component\Link\Domain\UrlInterface;
 use Application\Component\Link\Exception\AnalyserFailedException;
 use Application\Component\Link\Factory\AnalyseReportFactoryInterface;
-use Embed\Adapters\AdapterInterface;
-use Embed\Embed;
+use Embed\Providers\OEmbed;
 use Embed\Request;
 use Embed\Url;
 
@@ -41,13 +40,15 @@ class EmbedAnalyser implements AnalyserInterface
      */
     public function analyse($content, UrlInterface $url)
     {
-        $info = Embed::create($this->createRequest($content, $url));
+        $oembed = new OEmbed();
+        $oembed->init($this->createRequest($content, $url));
+        $oembed->run();
 
-        if (false === $info) {
+        if (!count($oembed->bag->getAll())) {
             throw new AnalyserFailedException(sprintf('Url "%s" is not supported.', $url->getUrl()));
         }
 
-        return $this->reportFactory->create($this->transform($info));
+        return $this->reportFactory->create($this->transform($oembed));
     }
 
     /**
@@ -55,17 +56,7 @@ class EmbedAnalyser implements AnalyserInterface
      */
     public function support($mimeType, $host = null)
     {
-        if (null === $host) {
-            return false;
-        }
-
-        $host = array_reverse(explode('.', $host));
-
-        if (class_exists('Embed\\Adapters\\'.ucfirst(strtolower($host[1])))) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     /**
@@ -79,29 +70,27 @@ class EmbedAnalyser implements AnalyserInterface
     /**
      * Transform adapter info into embed provider.
      *
-     * @param AdapterInterface $info
+     * @param OEmbed $oembed
      *
      * @return EmbedProvider
      */
-    protected function transform($info)
+    protected function transform($oembed)
     {
+        $images = $oembed->getImagesUrls();
+
         $provider = $this->newProvider();
-        $provider->setTitle($info->getTitle());
-        $provider->setDescription($info->getDescription());
-        $provider->setUrl($info->getUrl());
-        $provider->setType($info->getType());
-        $provider->setImage($info->getImage());
-        $provider->setImageWidth($info->getImageWidth());
-        $provider->setImageHeight($info->getImageHeight());
-        $provider->setImages($info->getImages());
-        $provider->setCode($info->getCode());
-        $provider->setWidth($info->getWidth());
-        $provider->setHeight($info->getHeight());
-        $provider->setAuthorName($info->getAuthorName());
-        $provider->setAuthorUrl($info->getAuthorUrl());
-        $provider->setProviderName($info->getProviderName());
-        $provider->setProviderUrl($info->getProviderUrl());
-        $provider->setPublishedTime($info->getPublishedTime());
+        $provider->setTitle($oembed->getTitle());
+        $provider->setType($oembed->getType());
+        $provider->setImage(!empty($images)? current($images) : null);
+        $provider->setImageWidth($oembed->bag->has('thumbnail_width')? $oembed->bag->get('thumbnail_width') : null);
+        $provider->setImageHeight($oembed->bag->has('thumbnail_height')? $oembed->bag->get('thumbnail_height') : null);
+        $provider->setCode($oembed->getCode());
+        $provider->setWidth($oembed->getWidth());
+        $provider->setHeight($oembed->getHeight());
+        $provider->setAuthorName($oembed->getAuthorName());
+        $provider->setAuthorUrl($oembed->getAuthorUrl());
+        $provider->setProviderName($oembed->getProviderName());
+        $provider->setProviderUrl($oembed->getProviderUrl());
 
         return $provider;
     }

@@ -33,6 +33,11 @@ class PageProvider implements ProviderInterface
     protected $keywords;
 
     /**
+     * @var string|null
+     */
+    protected $canonical;
+
+    /**
      * @var WebArchive|null
      */
     protected $archive;
@@ -44,7 +49,7 @@ class PageProvider implements ProviderInterface
      */
     public function setIcon($icon)
     {
-        $this->icon = $icon;
+        $this->icon = (null !== $icon)? (string) $icon : null;
     }
 
     /**
@@ -64,7 +69,7 @@ class PageProvider implements ProviderInterface
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->title = (null !== $title)? (string) $title : null;;
     }
 
     /**
@@ -94,7 +99,7 @@ class PageProvider implements ProviderInterface
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->description = (null !== $description)? (string) $description : null;;
     }
 
     /**
@@ -115,6 +120,22 @@ class PageProvider implements ProviderInterface
     public function setKeywords(array $keywords = null)
     {
         $this->keywords = $keywords;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCanonical()
+    {
+        return $this->canonical;
+    }
+
+    /**
+     * @param null|string $canonical
+     */
+    public function setCanonical($canonical)
+    {
+        $this->canonical = (null !== $canonical)? (string) $canonical : null;;
     }
 
     /**

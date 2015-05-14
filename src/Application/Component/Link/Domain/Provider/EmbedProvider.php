@@ -19,16 +19,6 @@ class EmbedProvider implements ProviderInterface
     /**
      * @var string
      */
-    protected $description;
-
-    /**
-     * @var string
-     */
-    protected $url;
-
-    /**
-     * @var string
-     */
     protected $type;
 
     /**
@@ -45,11 +35,6 @@ class EmbedProvider implements ProviderInterface
      * @var int
      */
     protected $imageHeight;
-
-    /**
-     * @var array
-     */
-    protected $images;
 
     /**
      * @var string
@@ -79,27 +64,12 @@ class EmbedProvider implements ProviderInterface
     /**
      * @var string
      */
-    protected $providerIcon;
-
-    /**
-     * @var array
-     */
-    protected $providerIcons;
-
-    /**
-     * @var string
-     */
     protected $providerName;
 
     /**
      * @var string
      */
     protected $providerUrl;
-
-    /**
-     * @var string
-     */
-    protected $publishedTime;
 
     /**
      * @return string|null
@@ -115,38 +85,6 @@ class EmbedProvider implements ProviderInterface
     public function setTitle($title)
     {
         $this->title = !empty($title)? (string) $title : null;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string|null $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = !empty($description)? (string) $description : null;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string|null $url
-     */
-    public function setUrl($url)
-    {
-        $this->url = !empty($url)? (string) $url : null;
     }
 
     /**
@@ -211,22 +149,6 @@ class EmbedProvider implements ProviderInterface
     public function setImageHeight($imageHeight)
     {
         $this->imageHeight = (null !== $imageHeight)? (int) $imageHeight : null;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getImages()
-    {
-        return $this->images;
-    }
-
-    /**
-     * @param array|null $images
-     */
-    public function setImages(array $images = null)
-    {
-        $this->images = !empty($images)? $images : null;
     }
 
     /**
@@ -312,38 +234,6 @@ class EmbedProvider implements ProviderInterface
     /**
      * @return string|null
      */
-    public function getProviderIcon()
-    {
-        return $this->providerIcon;
-    }
-
-    /**
-     * @param string|null $providerIcon
-     */
-    public function setProviderIcon($providerIcon)
-    {
-        $this->providerIcon = !empty($providerIcon)? (string) $providerIcon : null;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getProviderIcons()
-    {
-        return $this->providerIcons;
-    }
-
-    /**
-     * @param array|null $providerIcons
-     */
-    public function setProviderIcons(array $providerIcons = null)
-    {
-        $this->providerIcons = !empty($providerIcons)? $providerIcons : null;;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getProviderName()
     {
         return $this->providerName;
@@ -371,22 +261,6 @@ class EmbedProvider implements ProviderInterface
     public function setProviderUrl($providerUrl)
     {
         $this->providerUrl = !empty($providerUrl)? (string) $providerUrl : null;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPublishedTime()
-    {
-        return $this->publishedTime;
-    }
-
-    /**
-     * @param string|null $publishedTime
-     */
-    public function setPublishedTime($publishedTime)
-    {
-        $this->publishedTime = !empty($publishedTime)? (string) $publishedTime : null;
     }
 
     /**

@@ -190,8 +190,17 @@ class HtmlAnalyser implements AnalyserInterface, LoggerAwareInterface
                     continue;
                 }
 
-                if (false !== strpos($rel, 'icon')) {
-                    $provider->setIcon($href);
+                switch ($rel) {
+                    case 'favicon':
+                    case 'favico':
+                    case 'icon':
+                    case 'shortcut icon':
+                        $provider->setIcon($href);
+                        break;
+
+                    case 'canonical':
+                        $provider->setCanonical($href);
+                        break;
                 }
             }
         }

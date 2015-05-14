@@ -17,6 +17,7 @@ class PageProvider extends \Application\Component\Link\Domain\Provider\PageProvi
             'title'         => $this->title,
             'description'   => $this->description,
             'keywords'      => $this->keywords,
+            'canonical'     => $this->canonical,
             'archive'       => $this->archive,
         ];
     }
