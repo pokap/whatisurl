@@ -81,7 +81,7 @@ class HtmlAnalyser implements AnalyserInterface, LoggerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function support($mimeType, $host)
+    public function support($mimeType, $host = null)
     {
         return in_array($mimeType, ['text/html', 'application/xhtml+xml']);
     }

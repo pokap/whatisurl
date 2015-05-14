@@ -53,8 +53,12 @@ class EmbedAnalyser implements AnalyserInterface
     /**
      * {@inheritdoc}
      */
-    public function support($mimeType, $host)
+    public function support($mimeType, $host = null)
     {
+        if (null === $host) {
+            return false;
+        }
+
         $host = array_reverse(explode('.', $host));
 
         if (class_exists('Embed\\Adapters\\'.ucfirst(strtolower($host[1])))) {
