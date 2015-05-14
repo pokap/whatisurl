@@ -12,11 +12,11 @@
         <field fieldName="host"          type="string" />
         <field fieldName="port"          type="int" />
         <field fieldName="path"          type="string" />
-        <field fieldName="queryString"   type="collection"   name="query_string" />
+        <field fieldName="queryString"   type="hash"        name="query_string" />
 
         <field fieldName="status"        type="string" />
         <field fieldName="hash"          type="string" />
-        <field fieldName="updatedAt"     type="date"         name="updated_at" />
+        <field fieldName="updatedAt"     type="date"        name="updated_at" />
 
         <embed-one fieldName="httpHeader" target-document="Application\Bundle\SiteBundle\Document\HttpHeader" field="http_header" />
 
@@ -25,6 +25,7 @@
             <discriminator-map>
                 <discriminator-mapping value="page"     class="Application\Bundle\SiteBundle\Document\Provider\PageProvider" />
                 <discriminator-mapping value="rss"      class="Application\Bundle\SiteBundle\Document\Provider\RssProvider" />
+                <discriminator-mapping value="embed"    class="Application\Bundle\SiteBundle\Document\Provider\EmbedProvider" />
             </discriminator-map>
         </embed-many>
 
