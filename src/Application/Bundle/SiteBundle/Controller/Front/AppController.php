@@ -62,7 +62,7 @@ class AppController extends Controller
         $url = $this->getUrlManager()->findOneByUri($uri);
 
         if (null !== $url && $url->isVisited()) {
-            $date = (new \DateTime())->sub(new \DateInterval('P1W'));
+            $date = (new \DateTime())->sub(new \DateInterval('P1M'));
 
             if ($url->getUpdatedAt() > $date) {
                 $url->addOutUrls($this->getUrlDirectionManager()->findByFrom($url));

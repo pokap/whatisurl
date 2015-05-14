@@ -96,7 +96,7 @@ class NotificationRepository extends DocumentRepository implements NotificationR
     public function cleanup($maxAge)
     {
         $date = new \DateTime('now');
-        $date->sub(new \DateInterval(sprintf('PT%sS', $maxAge)));
+        $date->sub(new \DateInterval(sprintf('PT%dS', $maxAge)));
 
         $qb = $this->createQueryBuilder();
         $qb->remove();

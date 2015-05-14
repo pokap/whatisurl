@@ -105,7 +105,7 @@ class WebArchiveConsumer implements ConsumerInterface
     private function getSnapshots(UrlInterface $url, WebArchive $archive)
     {
         // mandatory latency
-        if ($archive->getUpdatedAt() && time() < $archive->getUpdatedAt()->add(new \DateInterval('P1W'))->getTimestamp()) {
+        if ($archive->getUpdatedAt() && time() < $archive->getUpdatedAt()->add(new \DateInterval('P1M'))->getTimestamp()) {
             return [];
         }
 

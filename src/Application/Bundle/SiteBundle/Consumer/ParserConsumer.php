@@ -171,7 +171,7 @@ class ParserConsumer implements ConsumerInterface
             return false;
         }
 
-        $date = (new \DateTime())->sub(new \DateInterval('P1W'));
+        $date = (new \DateTime())->sub(new \DateInterval('P1M'));
         if ($url->getUpdatedAt() > $date) {
             return false;
         }
