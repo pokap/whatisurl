@@ -172,7 +172,7 @@ class ParserConsumer implements ConsumerInterface
         }
 
         $date = (new \DateTime())->sub(new \DateInterval('P1M'));
-        if ($url->getUpdatedAt() > $date) {
+        if ($url->getUpdatedAt() < $date) {
             return false;
         }
 

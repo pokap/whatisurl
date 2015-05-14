@@ -64,7 +64,7 @@ class AppController extends Controller
         if (null !== $url && $url->isVisited()) {
             $date = (new \DateTime())->sub(new \DateInterval('P1M'));
 
-            if ($url->getUpdatedAt() > $date) {
+            if ($url->getUpdatedAt() < $date) {
                 $url->addOutUrls($this->getUrlDirectionManager()->findByFrom($url));
 
                 return $this->createJsonResponse($request, $url);
