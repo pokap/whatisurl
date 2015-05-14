@@ -21,8 +21,8 @@ class HttpHeader extends \Application\Component\Link\Domain\HttpHeader implement
             'content_language'          => $this->contentLanguage,
             'content_md5'               => $this->contentMD5,
             'etag'                      => $this->etag,
-            'expires'                   => $this->expires,
-            'date'                      => $this->date,
+            'expires'                   => $this->expires? $this->expires->format(DATE_ISO8601) : null,
+            'date'                      => $this->date? $this->date->format(DATE_ISO8601) : null,
             'last_modified'             => $this->lastModified? $this->lastModified->format(DATE_ISO8601) : null,
             'status_code'               => $this->statusCode,
         ];
