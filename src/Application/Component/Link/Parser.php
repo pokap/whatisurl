@@ -184,7 +184,7 @@ class Parser implements ParserInterface
             $file = $this->retrieveRobotstxt($report);
 
             if (0 < count($file->allUserAgents()) && !$file->isUrlAllowedByUserAgent($link->getPath(), $this->agent)) {
-                $this->initHttpHeader($link, 403);
+                $this->initHttpHeader($link, ('/' === $link->getPath())? 403 : 404);
 
                 return;
             }
