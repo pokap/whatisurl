@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Zend\Http\Client\Exception\ExceptionInterface as ZendHttpClientException;
 use Zend\Uri\Uri;
 
 /**
@@ -73,7 +74,9 @@ class AppController extends Controller
         }
 
         try {
-            $report = $this->getParser()->parse($uri, 1);
+            $report = $this->getParser()->parse($uri, 3);
+        } catch (ZendHttpClientException $e) {
+            return new JsonResponse(null, Response::HTTP_GATEWAY_TIMEOUT);
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
