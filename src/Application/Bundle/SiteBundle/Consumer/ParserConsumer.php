@@ -133,9 +133,20 @@ class ParserConsumer implements ConsumerInterface
         if ($deep > 0) {
             $deep--;
 
+            $outLinks = [];
+
+            /** @var Url $subUrl */
             foreach ($url->getOut() as $subUrl) {
+                if (in_array($subUrl->getHash(), $outLinks)) {
+                    continue;
+                }
+
+                $outLinks[] = $subUrl->getHash();
+
                 $this->async($subUrl, $deep);
             }
+
+            unset($outLinks);
         }
     }
 

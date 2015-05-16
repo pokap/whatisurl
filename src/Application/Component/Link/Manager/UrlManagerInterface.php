@@ -93,4 +93,13 @@ interface UrlManagerInterface
      * @return bool
      */
     public function isSuccess(UrlInterface $url);
+
+    /**
+     * Is the response empty?
+     *
+     * @param UrlInterface $url
+     *
+     * @return bool
+     */
+    public function isEmpty(UrlInterface $url);
 }

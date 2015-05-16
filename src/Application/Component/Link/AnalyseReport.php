@@ -13,7 +13,7 @@ use Application\Component\Link\Domain\ProviderInterface;
 class AnalyseReport implements AnalyseReportInterface
 {
     /**
-     * @var ProviderInterface
+     * @var ProviderInterface|null
      */
     protected $provider;
 
@@ -25,9 +25,9 @@ class AnalyseReport implements AnalyseReportInterface
     /**
      * Constructor.
      *
-     * @param ProviderInterface $provider
+     * @param ProviderInterface|null $provider
      */
-    public function __construct(ProviderInterface $provider)
+    public function __construct(ProviderInterface $provider = null)
     {
         $this->provider = $provider;
     }
@@ -38,6 +38,14 @@ class AnalyseReport implements AnalyseReportInterface
     public function getProvider()
     {
         return $this->provider;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasProvider()
+    {
+        return null !== $this->provider;
     }
 
     /**

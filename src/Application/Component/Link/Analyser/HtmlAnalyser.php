@@ -254,6 +254,38 @@ class HtmlAnalyser implements AnalyserInterface, LoggerAwareInterface
 
             $report->addUrl($link);
         }
+
+        /** @var \DOMNode $a */
+        foreach ($doc->getElementsByTagName('iframe') as $i) {
+            /** @var \DOMAttr $src */
+            $src = $i->attributes->getNamedItem('src');
+
+            if (null !== $src) {
+                $src = $this->urlManager->resolvePath($url, $src->value);
+            }
+
+            if (null === $src) {
+                continue;
+            }
+
+            $report->addUrl($this->urlFactory->create($src));
+        }
+
+        /** @var \DOMNode $a */
+        foreach ($doc->getElementsByTagName('img') as $i) {
+            /** @var \DOMAttr $src */
+            $src = $i->attributes->getNamedItem('src');
+
+            if (null !== $src) {
+                $src = $this->urlManager->resolvePath($url, $src->value);
+            }
+
+            if (null === $src) {
+                continue;
+            }
+
+            $report->addUrl($this->urlFactory->create($src));
+        }
     }
 
     /**

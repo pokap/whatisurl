@@ -205,7 +205,7 @@ class Parser implements ParserInterface
             return;
         }
 
-        if ($timeout > 0 && $this->urlManager->isSuccess($link)) {
+        if ($timeout > 0 && !$this->urlManager->isEmpty($link)) {
             $this->analyseContent($link, $timeout);
         }
     }
@@ -335,7 +335,7 @@ class Parser implements ParserInterface
     protected function analyseContent(UrlInterface $link, $timeout = 10.)
     {
         $response = $this->client->get($link, $timeout);
-        if (Response::HTTP_NOT_MODIFIED === $response->getStatusCode()) {
+        if (in_array($response->getStatusCode(), [Response::HTTP_NO_CONTENT, Response::HTTP_NOT_MODIFIED])) {
             return false;
         }
 
@@ -367,7 +367,10 @@ class Parser implements ParserInterface
                 continue;
             }
 
-            $link->addProvider($report->getProvider());
+            if ($report->hasProvider()) {
+                $link->addProvider($report->getProvider());
+            }
+
             $link->addOutUrls($report->getUrlsFound());
         }
 

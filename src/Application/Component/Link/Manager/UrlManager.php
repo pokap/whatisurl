@@ -29,14 +29,22 @@ class UrlManager implements UrlManagerInterface, LoggerAwareInterface
 
         try {
             $uri = new Uri($path);
+            // remove useless fragment
+            $uri->setFragment(null);
+
+            if (!$uri->isValid()) {
+                return null;
+            }
+
+            if ($uri->isAbsolute()) {
+                return $uri;
+            }
+
             $uri->resolve($baseUrl);
 
             if (!$uri->isValid() || !$uri->isAbsolute() || !$uri->getHost()) {
                 return null;
             }
-
-            // remove useless fragment
-            $uri->setFragment(null);
 
             return $uri;
         } catch (ZendUriExceptionInterface $exception) {
@@ -141,7 +149,7 @@ class UrlManager implements UrlManagerInterface, LoggerAwareInterface
 
         $code = $url->getHttpHeader()->getStatusCode();
 
-        return (300 <= $code && 400 > $code);
+        return in_array($code, [201, 301, 302, 303, 307, 308]);
     }
 
     /**
@@ -156,5 +164,19 @@ class UrlManager implements UrlManagerInterface, LoggerAwareInterface
         $code = $url->getHttpHeader()->getStatusCode();
 
         return (200 <= $code && 300 > $code);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEmpty(UrlInterface $url)
+    {
+        if (!$url->isVisited()) {
+            throw new \LogicException('This URL has not been visited!');
+        }
+
+        $code = $url->getHttpHeader()->getStatusCode();
+
+        return in_array($code, [204, 304]);
     }
 }

@@ -15,7 +15,7 @@ class AnalyseReportFactory implements AnalyseReportFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(ProviderInterface $provider)
+    public function create(ProviderInterface $provider = null)
     {
         return new AnalyseReport($provider);
     }

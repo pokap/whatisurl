@@ -92,8 +92,16 @@ class AppController extends Controller
             $this->getSiteRepository()->save($report->getSite());
         }
 
+        $outLinks = [];
+
         /** @var Url $out */
         foreach ($url->getOut() as $out) {
+            if (in_array($out->getHash(), $outLinks)) {
+                continue;
+            }
+
+            $outLinks[] = $out->getHash();
+
             $out->setStatus($out::STATUS_WAITING);
             $this->getUrlManager()->save($out);
 
@@ -129,7 +137,7 @@ class AppController extends Controller
         if (JSON_ERROR_NONE !== json_last_error()) {
             $this->container->get('logger')->critical(json_last_error_msg());
 
-            return new Response('', Response::HTTP_BAD_GATEWAY);
+            return new JsonResponse(null, Response::HTTP_BAD_GATEWAY);
         }
 
         $response = new Response();

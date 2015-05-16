@@ -15,9 +15,9 @@ interface AnalyseReportFactoryInterface
     /**
      * Create new instance of analyse report.
      *
-     * @param ProviderInterface $provider
+     * @param ProviderInterface|null $provider
      *
      * @return AnalyseReportInterface
      */
-    public function create(ProviderInterface $provider);
+    public function create(ProviderInterface $provider = null);
 }

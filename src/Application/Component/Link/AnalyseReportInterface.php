@@ -15,9 +15,16 @@ interface AnalyseReportInterface
     /**
      * Returns the provider.
      *
-     * @return ProviderInterface
+     * @return ProviderInterface|null
      */
     public function getProvider();
+
+    /**
+     * Check if a provider has been sets.
+     *
+     * @return bool
+     */
+    public function hasProvider();
 
     /**
      * Add a new URL.
