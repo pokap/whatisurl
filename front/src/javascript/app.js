@@ -70,10 +70,7 @@ var path = function (mini) {
     }
 
     function validUrl(str) {
-        var pattern = new RegExp('^https?:\/\/'+            // protocol
-        '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+     // domain name
-        '((\d{1,3}\.){3}\d{1,3}))'+                         // OR ip (v4) address
-        '(\:\d+)?(\/[-a-z\d%_.~+]*)*','i');                 // port and path
+        var pattern = new RegExp('^https?:\/\/(([^\.]+\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}','i');
 
         return pattern.test(str);
     }
