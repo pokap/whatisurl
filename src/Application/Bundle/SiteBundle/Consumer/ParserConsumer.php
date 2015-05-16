@@ -130,8 +130,10 @@ class ParserConsumer implements ConsumerInterface
         }
 
         $deep = $message->getValue('deep', 0);
-        if ($deep > 0) {
-            $deep--;
+        if ($deep > 0 || $deep === -1) {
+            if ($deep > 0) {
+                $deep--;
+            }
 
             $outLinks = [];
 

@@ -82,6 +82,11 @@ class AppController extends Controller
 
         $this->getUrlManager()->save($url);
 
+        $this->getBackend()->createAndPublish('parser', [
+            'url'  => (string) $url->getId(),
+            'deep' => 1
+        ]);
+
         if ($url->hasProvider('page')) {
             $this->getBackend()->createAndPublish('web_archive', [
                 'url' => (string) $url->getId(),
