@@ -62,7 +62,7 @@ class Url implements UrlInterface
     {
         $this->schema = (string) $schema;
         $this->host = (string) $host;
-        $this->queryString = $queryString;
+        $this->queryString = static::cleanQueryString($queryString);
 
         if (!empty($path)) {
             $this->path = (string) $path;
@@ -211,5 +211,26 @@ class Url implements UrlInterface
     public function getOut()
     {
         return $this->out;
+    }
+
+    /**
+     * Clean list of query string.
+     *
+     * @param array $queryString
+     *
+     * @return array
+     */
+    public static function cleanQueryString(array $queryString)
+    {
+        $result = [];
+        foreach ($queryString as $key => $value) {
+            if (is_int($key) && empty($value)) {
+                continue;
+            }
+
+            $result[$key] = is_array($value)? static::cleanQueryString($value) : (string) $value;
+        }
+
+        return $result;
     }
 }
