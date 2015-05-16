@@ -38,7 +38,7 @@ class DuplicationMigrationCommand extends ContainerAwareCommand
         $progress->setBarCharacter('<comment>=</comment>');
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
 
-        foreach ($query as $url) {
+        foreach (iterator_to_array($query) as $url) {
             $progress->advance();
 
             $this->cleanDuplicate($url);
@@ -59,10 +59,10 @@ class DuplicationMigrationCommand extends ContainerAwareCommand
     {
         $coll = $this->getDoctrineManager()->getDocumentCollection(Url::class)->getMongoCollection();
 
-        $query = $coll->find(['hash' => $url['hash']], ['_id' => true]);
+        $query = $coll->find(['hash' => $url['hash'], '_id' => ['$ne' => $url['_id']]], ['_id' => true]);
         $count = $query->count();
 
-        if ($count <= 1) {
+        if ($count === 0) {
             return;
         }
 
