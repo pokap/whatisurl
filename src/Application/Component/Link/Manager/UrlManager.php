@@ -21,6 +21,14 @@ class UrlManager implements UrlManagerInterface, LoggerAwareInterface
     /**
      * {@inheritdoc}
      */
+    public function isValid(UriInterface $uri)
+    {
+        return null !== $uri->getHost() && $uri->isAbsolute() && $uri->isValid();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function resolvePath($baseUrl, $path)
     {
         if (empty($path) || $path[0] === '#') {

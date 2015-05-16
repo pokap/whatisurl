@@ -13,6 +13,15 @@ use Zend\Uri\UriInterface;
 interface UrlManagerInterface
 {
     /**
+     * Check that URI is a valid URL.
+     *
+     * @param UriInterface $uri
+     *
+     * @return bool
+     */
+    public function isValid(UriInterface $uri);
+
+    /**
      * Clear an url.
      *
      * @param string $baseUrl

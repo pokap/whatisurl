@@ -27,15 +27,6 @@ interface UrlFactoryInterface
     public function create(UriInterface $uri, $contentTypePresumed = null);
 
     /**
-     * Check that URI is compatible URL.
-     *
-     * @param UriInterface $uri
-     *
-     * @return bool
-     */
-    public function isCompatible(UriInterface $uri);
-
-    /**
      * Create new instance of HttpHeader domain.
      *
      * @return HttpHeaderInterface

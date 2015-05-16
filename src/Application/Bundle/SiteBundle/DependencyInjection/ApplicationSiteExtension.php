@@ -19,6 +19,7 @@ class ApplicationSiteExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
         $loader->load('analysers.yml');
+        $loader->load('async_producer.yml');
         $loader->load('consumer.yml');
         $loader->load('factories.yml');
         $loader->load('link.yml');

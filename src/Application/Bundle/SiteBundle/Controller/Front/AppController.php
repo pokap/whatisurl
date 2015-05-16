@@ -60,24 +60,20 @@ class AppController extends Controller
     {
         $uri = new Uri($request->query->get('url'));
 
-        if (null === $uri->getHost() || !$uri->isValid()) {
+        if (!$this->getUrlManager()->isValid($uri)) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
         $url = $this->getUrlManager()->findOneByUri($uri);
 
-        if (null !== $url && $url->isVisited()) {
-            $date = (new \DateTime())->sub(new \DateInterval('P1M'));
+        if ($this->getUrlManager()->isUpToDate($url)) {
+            $url->addOutUrls($this->getUrlDirectionManager()->findByFrom($url));
 
-            if ($url->getUpdatedAt() > $date) {
-                $url->addOutUrls($this->getUrlDirectionManager()->findByFrom($url));
-
-                return $this->createJsonResponse($request, $url);
-            }
+            return $this->createJsonResponse($request, $url);
         }
 
         try {
-            $report = $this->getParser()->parse($uri);
+            $report = $this->getParser()->parse($uri, 1);
         } catch (\InvalidArgumentException $e) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
@@ -85,17 +81,11 @@ class AppController extends Controller
         /** @var Url $url */
         $url = $report->getUrl();
 
+        $this->sendParserAsync($url);
         $this->getUrlManager()->save($url);
 
-        $this->getBackend()->createAndPublish('parser', [
-            'url'  => (string) $url->getId(),
-            'deep' => 1
-        ]);
-
         if ($url->hasProvider('page')) {
-            $this->getBackend()->createAndPublish('web_archive', [
-                'url' => (string) $url->getId(),
-            ]);
+            $this->sendWebArchiveAsync($url);
         }
 
         if (null !== $report->getSite()) {
@@ -112,13 +102,8 @@ class AppController extends Controller
 
             $outLinks[] = $out->getHash();
 
-            $out->setStatus($out::STATUS_WAITING);
+            $this->sendParserAsync($url);
             $this->getUrlManager()->save($out);
-
-            $this->getBackend()->createAndPublish('parser', [
-                'url'  => (string) $out->getId(),
-                'deep' => 1
-            ]);
 
             if (!$this->getUrlDirectionManager()->exists($url, $out)) {
                 $direction = new UrlDirection();
@@ -206,12 +191,24 @@ class AppController extends Controller
     }
 
     /**
-     * Returns the backend.
+     * Execute an asynchrone "parser".
      *
-     * @return \Sonata\NotificationBundle\Backend\BackendInterface
+     * @param Url $url
      */
-    private function getBackend()
+    private function sendParserAsync(Url $url)
     {
-        return $this->container->get('sonata.notification.backend');
+        $url->setStatus($url::STATUS_WAITING);
+
+        $this->container->get('site.link.parser_async_producer')->send(['url' => $url]);
+    }
+
+    /**
+     * Execute an asynchrone "web archive".
+     *
+     * @param Url $url
+     */
+    private function sendWebArchiveAsync(Url $url)
+    {
+        $this->container->get('site.link.parser_async_producer')->send(['url' => $url]);
     }
 }

@@ -7,7 +7,8 @@ services:
             - '@site.link.parser_report_factory'
             - '@site.link.url_manager'
             - '@site.link.site_repository'
-            - '@sonata.notification.backend'
+            - '@site.link.parser_async_producer'
+            - '@site.link.web_archive_async_producer'
 
     site.link.web_archive_consumer:
         class:      Application\Bundle\SiteBundle\Consumer\WebArchiveConsumer

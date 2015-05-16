@@ -12,21 +12,6 @@ use Application\Bundle\SiteBundle\Manager\UrlManager;
 class UrlFactory extends \Application\Component\Link\Factory\UrlFactory
 {
     /**
-     * @var UrlManager
-     */
-    protected $manager;
-
-    /**
-     * Constructor.
-     *
-     * @param UrlManager $manager
-     */
-    public function __construct(UrlManager $manager)
-    {
-        $this->manager = $manager;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function newUrl($schema, $host, $path, array $queryString = [], $port = null)

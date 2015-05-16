@@ -7,6 +7,7 @@ use Application\Component\Link\Domain\HttpHeaderInterface;
 use Application\Component\Link\Domain\Url;
 use Application\Component\Link\Domain\UrlInterface;
 use Application\Component\Link\Exception\InvalidArgumentException;
+use Application\Component\Link\Manager\UrlManagerInterface;
 use Zend\Uri\UriInterface;
 
 /**
@@ -17,11 +18,26 @@ use Zend\Uri\UriInterface;
 class UrlFactory implements UrlFactoryInterface
 {
     /**
+     * @var UrlManagerInterface
+     */
+    protected $manager;
+
+    /**
+     * Constructor.
+     *
+     * @param UrlManagerInterface $urlManager
+     */
+    public function __construct(UrlManagerInterface $urlManager)
+    {
+        $this->manager = $urlManager;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function create(UriInterface $uri, $contentTypePresumed = null)
     {
-	    if (!$this->isCompatible($uri)) {
+	    if (!$this->manager->isValid($uri)) {
             throw new InvalidArgumentException('Url is not compatible.');
         }
 
@@ -38,14 +54,6 @@ class UrlFactory implements UrlFactoryInterface
         }
 
         return $url;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCompatible(UriInterface $uri)
-    {
-        return null !== $uri->getHost() && $uri->isValid();
     }
 
     /**

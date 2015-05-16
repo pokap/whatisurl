@@ -32,4 +32,12 @@ class SiteRepository extends DocumentRepository implements SiteRepositoryInterfa
         $this->dm->persist($site);
         $this->dm->flush();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByHost($host)
+    {
+        return $this->findOneBy(['hosts' => ['$in' => [$host]]]);
+    }
 }

@@ -1,0 +1,11 @@
+services:
+    site.link.parser_async_producer:
+        class:      Application\Bundle\SiteBundle\AsyncProducer\ParserAsyncProducer
+        arguments:
+            - '@sonata.notification.backend'
+            - '@site.link.site_repository'
+
+    site.link.web_archive_async_producer:
+        class:      Application\Bundle\SiteBundle\AsyncProducer\WebArchiveAsyncProducer
+        arguments:
+            - '@sonata.notification.backend'

@@ -27,6 +27,35 @@ class UrlManager extends \Application\Component\Link\Manager\UrlManager
     }
 
     /**
+     * Check if the url is up to date.
+     *
+     * @param Url    $url
+     * @param string $interval
+     *
+     * @return bool
+     */
+    public function isUpToDate(Url $url, $interval = 'P1W')
+    {
+        if (!$url->isVisited()) {
+            return false;
+        }
+
+        $date = (new \DateTime())->sub(new \DateInterval($interval));
+
+        if ($url->getUpdatedAt() > $date) {
+            return true;
+        }
+
+        $expires = $url->getHttpHeader()->getExpires();
+
+        if (null !== $expires && $url->getUpdatedAt() < $expires) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Finds a single Url given by an uri.
      *
      * @param UriInterface $uri
