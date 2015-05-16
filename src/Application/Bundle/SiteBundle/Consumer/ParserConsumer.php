@@ -138,7 +138,7 @@ class ParserConsumer implements ConsumerInterface
         $report = $this->parserReportFactory->create($url);
 
         if (null !== $site) {
-            $interval = $site->getLastAccessAt()->getTimestamp() - time();
+            $interval = time() - $site->getLastAccessAt()->getTimestamp();
 
             if ($interval >= $sleep) {
                 $sleep = 0;
