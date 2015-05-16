@@ -66,7 +66,7 @@ class AppController extends Controller
 
         $url = $this->getUrlManager()->findOneByUri($uri);
 
-        if ($this->getUrlManager()->isUpToDate($url)) {
+        if (null !== $url && $this->getUrlManager()->isUpToDate($url)) {
             $url->addOutUrls($this->getUrlDirectionManager()->findByFrom($url));
 
             return $this->createJsonResponse($request, $url);
