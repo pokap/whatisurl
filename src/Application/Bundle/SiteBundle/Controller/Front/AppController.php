@@ -78,6 +78,10 @@ class AppController extends Controller
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
+        if (null !== $report->getSite()) {
+            $this->getSiteRepository()->save($report->getSite());
+        }
+
         /** @var Url $url */
         $url = $report->getUrl();
 
@@ -86,10 +90,6 @@ class AppController extends Controller
 
         if ($url->hasProvider('page')) {
             $this->sendWebArchiveAsync($url);
-        }
-
-        if (null !== $report->getSite()) {
-            $this->getSiteRepository()->save($report->getSite());
         }
 
         $outLinks = [];

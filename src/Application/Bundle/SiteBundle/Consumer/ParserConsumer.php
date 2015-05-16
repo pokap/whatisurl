@@ -154,19 +154,19 @@ class ParserConsumer implements ConsumerInterface
 
         $this->parser->update($report, 300);
 
-        $url->setStatus($url::STATUS_COMPLETED);
-
-        if ($url->hasProvider('page')) {
-            $this->parserAsync->send(['url' => $url]);
-        }
-
-        $this->urlManager->save($url);
-
         if (null !== $report->getSite()) {
             $site = $report->getSite();
 
             $this->siteRepository->save($site);
         }
+
+        $url->setStatus($url::STATUS_COMPLETED);
+
+        if ($url->hasProvider('page')) {
+            $this->webArchiveAsync->send(['url' => $url]);
+        }
+
+        $this->urlManager->save($url);
     }
 
     /**
