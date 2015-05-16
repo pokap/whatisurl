@@ -32,14 +32,6 @@ class UrlManager implements UrlManagerInterface, LoggerAwareInterface
             // remove useless fragment
             $uri->setFragment(null);
 
-            if (!$uri->isValid()) {
-                return null;
-            }
-
-            if ($uri->isAbsolute()) {
-                return $uri;
-            }
-
             $uri->resolve($baseUrl);
 
             if (!$uri->isValid() || !$uri->isAbsolute() || !$uri->getHost()) {

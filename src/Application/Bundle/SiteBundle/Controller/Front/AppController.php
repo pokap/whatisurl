@@ -59,6 +59,11 @@ class AppController extends Controller
     public function searchAction(Request $request)
     {
         $uri = new Uri($request->query->get('url'));
+
+        if (null === $uri->getHost() || !$uri->isValid()) {
+            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+        }
+
         $url = $this->getUrlManager()->findOneByUri($uri);
 
         if (null !== $url && $url->isVisited()) {
