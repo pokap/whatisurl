@@ -48,14 +48,15 @@ class HttpClient implements HttpClientInterface
      */
     public function get(UrlInterface $url, $timeout = 10)
     {
-        $request = null;
+        $request = new Request();
+        $request->setUri($url->getUrl());
+        $request->setMethod('GET');
 
         if ($headers = $this->createRequestHeaders($url)) {
-            $request = new Request();
             $request->setHeaders($headers);
         }
 
-        return $this->send($url->getUrl(), $timeout, false, $request);
+        return $this->send($request, $timeout, false);
     }
 
     /**
@@ -63,40 +64,38 @@ class HttpClient implements HttpClientInterface
      */
     public function head(UrlInterface $url, $timeout = 10)
     {
-        $request = null;
+        $request = new Request();
+        $request->setUri($url->getUrl());
+        $request->setMethod('HEAD');
 
         if ($headers = $this->createRequestHeaders($url)) {
-            $request = new Request();
             $request->setHeaders($headers);
         }
 
-        return $this->send($url->getUrl(), $timeout, true, $request);
+        return $this->send($request, $timeout, true);
     }
 
     /**
      * Send a request.
      *
-     * @param string       $uri
-     * @param float        $timeout (Optional)
-     * @param bool         $withoutBody (Optional)
-     * @param Request|null $request (Optional)
+     * @param Request $request
+     * @param float   $timeout (Optional)
+     * @param bool    $withoutBody (Optional)
      *
      * @return \Zend\Http\Response
      */
-    protected function send($uri, $timeout, $withoutBody = false, Request $request = null)
+    protected function send(Request $request, $timeout, $withoutBody = false)
     {
         $this->client->setOptions([
             'timeout' => $timeout
         ]);
-
-        $this->client->setUri($uri);
 
         /** @var \Zend\Http\Client\Adapter\Curl $adapter */
         $adapter = $this->client->getAdapter();
         $adapter->setCurlOption(CURLOPT_NOBODY, $withoutBody);
         $adapter->setCurlOption(CURLOPT_FOLLOWLOCATION, false);
 
-        return $this->client->send();
+        return $this->client->send($request);
     }
 
     /**
@@ -116,7 +115,10 @@ class HttpClient implements HttpClientInterface
         $headers = new Headers();
 
         if (null !== $header->getLastModified()) {
-            $headers->addHeader(new IfModifiedSince($header->getLastModified()));
+            $value = new IfModifiedSince($header->getLastModified());
+            $value->setDate($header->getLastModified());
+
+            $headers->addHeader($value);
         }
 
         if (null !== $header->getEtag()) {
