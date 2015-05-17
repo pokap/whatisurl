@@ -15,7 +15,7 @@
         <field fieldName="queryString"   type="hash"        name="query_string" />
 
         <field fieldName="status"        type="string" />
-        <field fieldName="hash"          type="string" />
+        <field fieldName="hash"          type="string"      index="true" unique="true" order="asc" />
         <field fieldName="updatedAt"     type="date"        name="updated_at" />
 
         <embed-one fieldName="httpHeader" target-document="Application\Bundle\SiteBundle\Document\HttpHeader" field="http_header" />
@@ -28,12 +28,6 @@
                 <discriminator-mapping value="embed"    class="Application\Bundle\SiteBundle\Document\Provider\EmbedProvider" />
             </discriminator-map>
         </embed-many>
-
-        <indexes>
-            <index name="hash_id">
-                <key name="hash" order="asc" />
-            </index>
-        </indexes>
 
     </document>
 
