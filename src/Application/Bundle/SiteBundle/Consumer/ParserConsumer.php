@@ -115,7 +115,7 @@ class ParserConsumer implements ConsumerInterface
                 $deep--;
             }
 
-            $outLinks = [];
+            $outLinks = [$url->getHash()];
 
             /** @var Url $subUrl */
             foreach ($url->getOut() as $subUrl) {

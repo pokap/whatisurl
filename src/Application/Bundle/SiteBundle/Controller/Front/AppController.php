@@ -95,7 +95,7 @@ class AppController extends Controller
             $this->sendWebArchiveAsync($url);
         }
 
-        $outLinks = [];
+        $outLinks = [$url->getHash()];
 
         /** @var Url $out */
         foreach ($url->getOut() as $out) {
