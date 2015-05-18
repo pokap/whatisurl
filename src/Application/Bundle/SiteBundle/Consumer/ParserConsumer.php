@@ -6,6 +6,8 @@ use Application\Bundle\SiteBundle\AsyncProducer\ParserAsyncProducer;
 use Application\Bundle\SiteBundle\AsyncProducer\WebArchiveAsyncProducer;
 use Application\Bundle\SiteBundle\Document\Site;
 use Application\Bundle\SiteBundle\Document\Url;
+use Application\Bundle\SiteBundle\Document\UrlDirection;
+use Application\Bundle\SiteBundle\Manager\UrlDirectionManager;
 use Application\Bundle\SiteBundle\Manager\UrlManager;
 use Application\Bundle\SiteBundle\Repository\SiteRepositoryInterface;
 use Application\Component\Link\Factory\ParserReportFactoryInterface;
@@ -37,6 +39,11 @@ class ParserConsumer implements ConsumerInterface
     protected $urlManager;
 
     /**
+     * @var UrlDirectionManager
+     */
+    protected $urlDirectionManager;
+
+    /**
      * @var SiteRepositoryInterface
      */
     protected $siteRepository;
@@ -57,6 +64,7 @@ class ParserConsumer implements ConsumerInterface
      * @param ParserInterface              $parser
      * @param ParserReportFactoryInterface $parserReportFactory
      * @param UrlManager                   $urlManager
+     * @param UrlDirectionManager          $urlDirectionManager
      * @param SiteRepositoryInterface      $siteRepository
      * @param ParserAsyncProducer          $parserAsync
      * @param WebArchiveAsyncProducer      $webArchiveAsync
@@ -65,6 +73,7 @@ class ParserConsumer implements ConsumerInterface
         ParserInterface $parser,
         ParserReportFactoryInterface $parserReportFactory,
         UrlManager $urlManager,
+        UrlDirectionManager $urlDirectionManager,
         SiteRepositoryInterface $siteRepository,
         ParserAsyncProducer $parserAsync,
         WebArchiveAsyncProducer $webArchiveAsync)
@@ -72,6 +81,7 @@ class ParserConsumer implements ConsumerInterface
         $this->parser = $parser;
         $this->parserReportFactory = $parserReportFactory;
         $this->urlManager = $urlManager;
+        $this->urlDirectionManager = $urlDirectionManager;
         $this->siteRepository = $siteRepository;
         $this->parserAsync = $parserAsync;
         $this->webArchiveAsync = $webArchiveAsync;
@@ -116,6 +126,14 @@ class ParserConsumer implements ConsumerInterface
                 $outLinks[] = $subUrl->getHash();
 
                 $this->async($subUrl, $deep);
+
+                if (!$this->urlDirectionManager->exists($url, $subUrl)) {
+                    $direction = new UrlDirection();
+                    $direction->setFrom($url);
+                    $direction->setTo($subUrl);
+
+                    $this->urlDirectionManager->save($direction);
+                }
             }
 
             unset($outLinks);

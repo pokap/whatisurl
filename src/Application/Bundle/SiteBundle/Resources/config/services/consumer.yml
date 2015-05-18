@@ -6,6 +6,7 @@ services:
             - '@site.link.parser'
             - '@site.link.parser_report_factory'
             - '@site.link.url_manager'
+            - '@site.link.url_direction_manager'
             - '@site.link.site_repository'
             - '@site.link.parser_async_producer'
             - '@site.link.web_archive_async_producer'
