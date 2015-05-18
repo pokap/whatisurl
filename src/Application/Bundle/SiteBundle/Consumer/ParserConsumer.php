@@ -98,7 +98,7 @@ class ParserConsumer implements ConsumerInterface
         /** @var Url $url */
         $url = $this->urlManager->find($message->getValue('url'));
         if (null === $url) {
-            throw new \RuntimeException(sprintf('URL with ID "%s" not found.', $message->getValue('id')));
+            throw new \RuntimeException(sprintf('URL with ID "%s" not found.', $message->getValue('url')));
         }
 
         if (!$this->canBeUpdate($url)) {
