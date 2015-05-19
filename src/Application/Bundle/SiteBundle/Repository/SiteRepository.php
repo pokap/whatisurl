@@ -38,6 +38,10 @@ class SiteRepository extends DocumentRepository implements SiteRepositoryInterfa
      */
     public function findOneByHost($host)
     {
-        return $this->findOneBy(['hosts' => ['$in' => [$host]]]);
+        $qb = $this->createQueryBuilder();
+        $qb->field('hosts')->in([$host]);
+        $qb->sort(['lastAccessAt' => -1]);
+
+        return $qb->getQuery()->getSingleResult();
     }
 }
