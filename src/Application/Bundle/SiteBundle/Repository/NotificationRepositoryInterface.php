@@ -4,6 +4,7 @@ namespace Application\Bundle\SiteBundle\Repository;
 
 use Application\Bundle\SiteBundle\Document\Notification;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Sonata\NotificationBundle\Model\MessageInterface;
 
 /**
  * @author Florent Denis <dflorent.pokap@gmail.com>
@@ -21,10 +22,32 @@ interface NotificationRepositoryInterface extends ObjectRepository
      * Returns list of messages.
      *
      * @param array   $types
+     * @param string  $group
      * @param integer $state
      * @param integer $batchSize
      *
-     * @return []MessageInterface
+     * @return MessageInterface[]
+     */
+    public function findByTypesAndGroup(array $types, $state, $group, $batchSize);
+
+    /**
+     * Returns list of groups.
+     *
+     * @param array   $types
+     * @param integer $state
+     *
+     * @return string[]
+     */
+    public function groupByGroup(array $types, $state);
+
+    /**
+     * Returns list of messages.
+     *
+     * @param array   $types
+     * @param integer $state
+     * @param integer $batchSize
+     *
+     * @return MessageInterface[]
      */
     public function findByTypes(array $types, $state, $batchSize);
 

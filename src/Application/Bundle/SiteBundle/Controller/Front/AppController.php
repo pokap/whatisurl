@@ -202,7 +202,7 @@ class AppController extends Controller
     {
         $url->setStatus($url::STATUS_WAITING);
 
-        $this->container->get('site.link.parser_async_producer')->send(['url' => $url]);
+        $this->container->get('site.link.parser_async_producer')->send(['url' => $url, 'deep' => 10]);
     }
 
     /**

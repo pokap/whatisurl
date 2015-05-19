@@ -21,11 +21,14 @@
         "pokap/webarchive": "dev-master@dev",
 
         "embed/embed": "2.2.*",
-        "m6web/roboxt": "~1.1"
+        "m6web/roboxt": "~1.1",
+
+        "react/child-process": "~0.4"
     },
     "require-dev": {
         "symfony/assetic-bundle": "~2.3",
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "phpunit/phpunit": "~4.1"
     },
     "scripts": {
         "post-root-package-install": [

@@ -28,11 +28,15 @@ abstract class AbstractAsyncProducer implements AsyncProducerInterface
     /**
      * Create and publish in the queue.
      *
-     * @param array $body
+     * @param array       $body
+     * @param string|null $group
      */
-    final protected function publish(array $body)
+    final protected function publish(array $body, $group = null)
     {
-        $this->backend->createAndPublish($this->getType(), $body);
+        $message = $this->backend->create($this->getType(), $body);
+        $message->setGroup((null !== $group)? (string) $group : null);
+
+        $this->backend->publish($message);
     }
 
     /**

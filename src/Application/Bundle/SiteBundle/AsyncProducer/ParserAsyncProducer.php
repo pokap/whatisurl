@@ -25,9 +25,9 @@ class ParserAsyncProducer extends AbstractAsyncProducer
         $url = $options['url'];
 
         $this->publish([
-            'url'  => (string) $url->getId(),
-            'deep' => $options['deep'],
-        ]);
+            'url'   => (string) $url->getId(),
+            'deep'  => $options['deep'],
+        ], $url->getHost());
     }
 
     /**

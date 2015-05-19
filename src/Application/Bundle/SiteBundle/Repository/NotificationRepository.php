@@ -40,6 +40,39 @@ class NotificationRepository extends DocumentRepository implements NotificationR
     /**
      * {@inheritDoc}
      */
+    public function findByTypesAndGroup(array $types, $state, $group, $batchSize)
+    {
+        $builder = $this->prepareStateQuery($state, $types, $batchSize);
+        $builder->field('group')->equals($group);
+
+        return $builder->getQuery()->toArray();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function groupByGroup(array $types, $state)
+    {
+        $qb = $this->createQueryBuilder();
+        $qb->field('state')->equals($state);
+        $qb->field('group')->exists(true);
+
+        $qb->group(array('group' => 1), array('count' => 0));
+        $qb->reduce('function(obj, prev) { prev.count++; }');
+
+        $result = [];
+        foreach ($qb->getQuery()->execute() as $item) {
+            $result[$item['group']] = (int) $item['count'];
+        }
+
+        arsort($result);
+
+        return $result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function findByTypes(array $types, $state, $batchSize)
     {
         $builder = $this->prepareStateQuery($state, $types, $batchSize);

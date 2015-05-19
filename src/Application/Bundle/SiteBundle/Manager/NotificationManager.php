@@ -37,6 +37,22 @@ class NotificationManager implements MessageManagerInterface
     /**
      * {@inheritDoc}
      */
+    public function findByTypesAndGroup(array $types, $state, $group, $batchSize)
+    {
+        return $this->repository->findByTypesAndGroup($types, $state, $group, $batchSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function groupByGroup(array $types, $state)
+    {
+        return $this->repository->groupByGroup($types, $state);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function findByTypes(array $types, $state, $batchSize)
     {
         return $this->repository->findByTypes($types, $state, $batchSize);

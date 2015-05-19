@@ -9,6 +9,7 @@
         <field name="id" id="true" />
 
         <field fieldName="type"          type="string"       name="type" />
+        <field fieldName="group"         type="string"       name="group" />
         <field fieldName="body"          type="hash"         name="body" />
         <field fieldName="state"         type="int"          name="state" />
         <field fieldName="restartCount"  type="int"          name="restart_count" />
