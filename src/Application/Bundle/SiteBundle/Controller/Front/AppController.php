@@ -88,7 +88,6 @@ class AppController extends Controller
         /** @var Url $url */
         $url = $report->getUrl();
 
-        $this->sendParserAsync($url);
         $this->getUrlManager()->save($url);
 
         if ($url->hasProvider('page')) {
@@ -105,7 +104,7 @@ class AppController extends Controller
 
             $outLinks[] = $out->getHash();
 
-            $this->sendParserAsync($url);
+            $out->setStatus($out::STATUS_WAITING);
             $this->getUrlManager()->save($out);
 
             if (!$this->getUrlDirectionManager()->exists($url, $out)) {
@@ -115,6 +114,8 @@ class AppController extends Controller
 
                 $this->getUrlDirectionManager()->save($direction);
             }
+
+            $this->sendParserAsync($out);
         }
 
         return $this->createJsonResponse($request, $url);
