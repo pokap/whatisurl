@@ -125,7 +125,8 @@ class ParserConsumer implements ConsumerInterface
 
                 $outLinks[] = $subUrl->getHash();
 
-                $this->async($subUrl, $deep);
+                $subUrl->setStatus($subUrl::STATUS_WAITING);
+                $this->urlManager->save($subUrl);
 
                 if (!$this->urlDirectionManager->exists($url, $subUrl)) {
                     $direction = new UrlDirection();
@@ -134,6 +135,8 @@ class ParserConsumer implements ConsumerInterface
 
                     $this->urlDirectionManager->save($direction);
                 }
+
+                $this->async($subUrl, $deep);
             }
 
             unset($outLinks);
@@ -195,11 +198,7 @@ class ParserConsumer implements ConsumerInterface
      */
     private function async(Url $url, $deep)
     {
-        $url->setStatus($url::STATUS_WAITING);
-
         $this->parserAsync->send(['url' => $url, 'deep' => $deep]);
-
-        $this->urlManager->save($url);
     }
 
     /**
