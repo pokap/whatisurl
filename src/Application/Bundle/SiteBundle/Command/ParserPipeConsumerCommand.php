@@ -35,10 +35,13 @@ class ParserPipeConsumerCommand extends ContainerAwareCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $groups = $this->getNotificationManager()->groupByGroup(['parser'], MessageInterface::STATE_OPEN);
+        $nbGroups = count($groups);
         $blocksize = (int) max(10, $input->getOption('blocksize'));
 
+        $output->writeln(sprintf('<info>%d groups.</info>', $nbGroups));
+
         $loop = ReactFactory::create();
-        $loop->addPeriodicTimer(1, function(TimerInterface $timer) use ($groups, $blocksize, $loop, $output) {
+        $loop->addPeriodicTimer(1, function(TimerInterface $timer) use ($groups, $nbGroups, $blocksize, $loop, $output) {
             if (count($this->running) >= 10) {
                 return;
             }
@@ -82,7 +85,7 @@ class ParserPipeConsumerCommand extends ContainerAwareCommand
                 });
             }
 
-            if (empty($this->running) && (($this->offset + $blocksize) >= count($groups))) {
+            if (empty($this->running) && (($this->offset + $blocksize) >= $nbGroups)) {
                 $loop->stop();
             }
         });
