@@ -45,7 +45,7 @@ class ParserConsumerCommand extends ContainerAwareCommand
             }
 
             $date = new \DateTime();
-            $output->write(sprintf("[%s] <info>%s</info> #%s: ", $date->format('r'), $message->getType(), $i));
+            $output->write(sprintf("[%s] #%s: ", $date->format('r'), $i));
             $memoryUsage = memory_get_usage(true);
 
             try {
@@ -119,7 +119,8 @@ class ParserConsumerCommand extends ContainerAwareCommand
 
                 $outLinks[] = $subUrl->getHash();
 
-                $this->async($subUrl, $deep);
+                $subUrl->setStatus($subUrl::STATUS_WAITING);
+                $this->getUrlManager()->save($subUrl);
 
                 if (!$this->getUrlDirectionManager()->exists($url, $subUrl)) {
                     $direction = new UrlDirection();
@@ -128,6 +129,8 @@ class ParserConsumerCommand extends ContainerAwareCommand
 
                     $this->getUrlDirectionManager()->save($direction);
                 }
+
+                $this->async($subUrl, $deep);
             }
         }
     }
@@ -187,11 +190,7 @@ class ParserConsumerCommand extends ContainerAwareCommand
      */
     protected function async(Url $url, $deep)
     {
-        $url->setStatus($url::STATUS_WAITING);
-
         $this->getParserAsyncProducer()->send(['url' => $url, 'deep' => $deep]);
-
-        $this->getUrlManager()->save($url);
     }
 
     /**

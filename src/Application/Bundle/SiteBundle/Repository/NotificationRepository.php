@@ -65,8 +65,6 @@ class NotificationRepository extends DocumentRepository implements NotificationR
             $result[$item['group']] = (int) $item['count'];
         }
 
-        arsort($result);
-
         return $result;
     }
 
