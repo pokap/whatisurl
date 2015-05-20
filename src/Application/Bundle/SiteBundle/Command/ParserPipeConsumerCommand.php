@@ -8,6 +8,7 @@ use React\ChildProcess\Process;
 use Sonata\NotificationBundle\Model\MessageInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -25,6 +26,7 @@ class ParserPipeConsumerCommand extends ContainerAwareCommand
     {
         $this->setName('wiu:notification:parser:start');
         $this->setDescription('Parser pipe.');
+        $this->addOption('blocksize', 'bs', InputOption::VALUE_OPTIONAL, 'Size of block process', 10);
     }
 
     /**
@@ -33,9 +35,10 @@ class ParserPipeConsumerCommand extends ContainerAwareCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $groups = $this->getNotificationManager()->groupByGroup(['parser'], MessageInterface::STATE_OPEN);
+        $blocksize = (int) max(10, $input->getOption('blocksize'));
 
         $loop = ReactFactory::create();
-        $loop->addPeriodicTimer(1, function(TimerInterface $timer) use ($groups, $loop, $output) {
+        $loop->addPeriodicTimer(1, function(TimerInterface $timer) use ($groups, $blocksize, $loop, $output) {
             if (count($this->running) >= 10) {
                 return;
             }
@@ -43,7 +46,7 @@ class ParserPipeConsumerCommand extends ContainerAwareCommand
             $rootDir = dirname($this->getContainer()->getParameter('kernel.root_dir')); // app dir
             $env = $this->getContainer()->getParameter('kernel.environment');
 
-            $groupToCommand = array_splice($groups, $this->offset, 10 - count($this->running));
+            $groupToCommand = array_splice($groups, $this->offset, $blocksize - count($this->running));
 
             $output->writeln(sprintf('<info>OFFSET %d</info>', $this->offset));
 
@@ -79,7 +82,7 @@ class ParserPipeConsumerCommand extends ContainerAwareCommand
                 });
             }
 
-            if (empty($this->running) && (($this->offset + 10) >= count($groups))) {
+            if (empty($this->running) && (($this->offset + $blocksize) >= count($groups))) {
                 $loop->stop();
             }
         });
