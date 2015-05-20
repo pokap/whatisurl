@@ -31,7 +31,7 @@ class MessagePipeMigrationCommand extends ContainerAwareCommand
         }
 
         $coll = $this->getDoctrineManager()->getDocumentCollection(Notification::class)->getMongoCollection();
-        $query = $coll->find(['type' => 'parser', 'group' => ['$exists' => true]], ['body' => true]);
+        $query = $coll->find(['type' => 'parser', 'group' => ['$exists' => false]], ['body' => true]);
         $count = $query->count();
 
         $progress = new ProgressBar($output, $count);
