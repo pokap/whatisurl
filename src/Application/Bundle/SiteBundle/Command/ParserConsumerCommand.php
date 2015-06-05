@@ -155,7 +155,7 @@ class ParserConsumerCommand extends ContainerAwareCommand
 
             if ($interval >= $sleep) {
                 $sleep = 0;
-            } else {
+            } elseif (0 < $interval) {
                 $sleep -= $interval;
             }
 

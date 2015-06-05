@@ -179,4 +179,18 @@ class UrlManager implements UrlManagerInterface, LoggerAwareInterface
 
         return in_array($code, [204, 304]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTooHeavy(UrlInterface $url)
+    {
+        if (!$url->isVisited()) {
+            throw new \LogicException('This URL has not been visited!');
+        }
+
+        $length = $url->getHttpHeader()->getContentLength();
+
+        return null === $length || $length > 100000;
+    }
 }

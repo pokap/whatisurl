@@ -15,11 +15,6 @@ class Robots extends \Application\Component\Link\Domain\Robots
     protected $id;
 
     /**
-     * @var \DateTime
-     */
-    protected $updatedAt;
-
-    /**
      * Returns the document ID.
      *
      * @return string
@@ -27,25 +22,5 @@ class Robots extends \Application\Component\Link\Domain\Robots
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Returns the updated date.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Sets the updated date.
-     *
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
     }
 }

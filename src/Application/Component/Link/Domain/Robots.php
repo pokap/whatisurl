@@ -25,6 +25,11 @@ class Robots implements RobotsInterface
     protected $directives;
 
     /**
+     * @var \DateTime
+     */
+    protected $updatedAt;
+
+    /**
      * {@inheritdoc}
      */
     public function getHost()
@@ -70,5 +75,21 @@ class Robots implements RobotsInterface
     public function getDirectives()
     {
         return $this->directives;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
     }
 }

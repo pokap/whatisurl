@@ -111,4 +111,13 @@ interface UrlManagerInterface
      * @return bool
      */
     public function isEmpty(UrlInterface $url);
+
+    /**
+     * Is content too heavy?
+     *
+     * @param UrlInterface $url
+     *
+     * @return bool
+     */
+    public function isTooHeavy(UrlInterface $url);
 }

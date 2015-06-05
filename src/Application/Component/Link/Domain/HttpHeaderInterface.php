@@ -12,14 +12,14 @@ interface HttpHeaderInterface
     /**
      * Sets the content type.
      *
-     * @param string $contentType
+     * @param string|null $contentType
      */
     public function setContentType($contentType);
 
     /**
      * Returns the content type.
      *
-     * @return string
+     * @return string|null
      */
     public function getContentType();
 
@@ -36,6 +36,20 @@ interface HttpHeaderInterface
      * @return string|null
      */
     public function getContentTypePresumed();
+
+    /**
+     * Sets the content length.
+     *
+     * @param int|null $contentLength
+     */
+    public function setContentLength($contentLength);
+
+    /**
+     * Returns the content length.
+     *
+     * @return int|null
+     */
+    public function getContentLength();
 
     /**
      * Sets the content disposition.

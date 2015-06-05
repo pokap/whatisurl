@@ -205,7 +205,7 @@ class Parser implements ParserInterface
             return;
         }
 
-        if ($timeout > 0 && !$this->urlManager->isEmpty($link)) {
+        if ($timeout > 0 && !$this->urlManager->isEmpty($link) && !$this->urlManager->isTooHeavy($link)) {
             $this->analyseContent($link, $timeout);
         }
     }
@@ -222,7 +222,9 @@ class Parser implements ParserInterface
         $link = $report->getUrl();
         $robots = $this->robotsFactory->create($link->getHost());
 
-        if (null === $robots->getUserAgent()) {
+        $date = (new \DateTime())->sub(new \DateInterval('P1M'));
+
+        if ($robots->getUpdatedAt() < $date) {
             $file = $this->robotsParser->parse($link->getBaseUrl() . '/robots.txt');
 
             $this->robotsTransformer->transform($robots, $file->getUserAgent($this->agent));
@@ -259,6 +261,13 @@ class Parser implements ParserInterface
             $contentType = $response->getHeaders()->get('Content-Type');
 
             $linkHeader->setContentType($contentType->getMediaType());
+        }
+
+        if ($response->getHeaders()->has('Content-Length')) {
+            /** @var \Zend\Http\Header\ContentLength $contentLength */
+            $contentLength = $response->getHeaders()->get('Content-Length');
+
+            $linkHeader->setContentLength($contentLength->getFieldValue());
         }
 
         if ($response->getHeaders()->has('Last-Modified')) {

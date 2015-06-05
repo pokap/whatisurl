@@ -20,6 +20,11 @@ class HttpHeader implements HttpHeaderInterface
     protected $contentTypePresumed;
 
     /**
+     * @var int|null
+     */
+    protected $contentLength;
+
+    /**
      * @var string|null
      */
     protected $contentDisposition;
@@ -89,6 +94,22 @@ class HttpHeader implements HttpHeaderInterface
     public function getContentTypePresumed()
     {
         return $this->contentTypePresumed;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContentLength($contentLength)
+    {
+        $this->contentLength = (null === $contentLength)? null : (int) $contentLength;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContentLength()
+    {
+        return $this->contentLength;
     }
 
     /**

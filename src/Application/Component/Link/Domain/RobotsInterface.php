@@ -50,4 +50,18 @@ interface RobotsInterface
      * @return array
      */
     public function getDirectives();
+
+    /**
+     * Returns the updated date.
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt();
+
+    /**
+     * Sets the updated date.
+     *
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt);
 }

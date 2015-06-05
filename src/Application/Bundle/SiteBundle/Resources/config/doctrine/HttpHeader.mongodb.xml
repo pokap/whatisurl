@@ -6,6 +6,7 @@
 
         <field fieldName="contentType"           type="string"   name="content_type" />
         <field fieldName="contentTypePresumed"   type="string"   name="content_type_presumed" />
+        <field fieldName="contentLength"         type="int"      name="content_length" />
         <field fieldName="contentDisposition"    type="string"   name="content_disposition" />
         <field fieldName="contentLanguage"       type="string"   name="content_language" />
         <field fieldName="contentMD5"            type="string"   name="content_md5" />
