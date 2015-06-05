@@ -23,7 +23,7 @@ class MessageManagerMessageIterator extends \Sonata\NotificationBundle\Iterator\
     /**
      * {@inheritdoc}
      */
-    public function __construct(NotificationManager $notificationManager, $types = array(), $group, $pause = 500000, $batchSize = 10)
+    public function __construct(NotificationManager $notificationManager, $types = array(), $group, $pause = 1500000, $batchSize = 10)
     {
         parent::__construct($notificationManager, $types, $pause, $batchSize);
 

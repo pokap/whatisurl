@@ -25,6 +25,13 @@
                 <key name="type" order="asc" />
                 <key name="createdAt" order="desc" />
             </index>
+
+            <index name="groups">
+                <key name="state" order="asc" />
+                <key name="type" order="asc" />
+                <key name="group" order="asc" />
+                <key name="createdAt" order="desc" />
+            </index>
         </indexes>
 
     </document>
