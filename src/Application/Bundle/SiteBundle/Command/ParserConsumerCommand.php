@@ -165,7 +165,7 @@ class ParserConsumerCommand extends ContainerAwareCommand
         // wait 15 seconds before send a request
         sleep($sleep);
 
-        $this->getParser()->update($report, 300);
+        $this->getParser()->update($report, 10);
 
         if (null !== $report->getSite()) {
             $site = $report->getSite();
