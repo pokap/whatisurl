@@ -9,7 +9,7 @@ sonata_notification:
         doctrine:
             message_manager:    site.notification.manager
             max_age:            86400       # max age in second
-            pause:              500000      # delay in microseconds
+            pause:              1500000     # delay in microseconds
             batch_size:         10          # number of messages on each iteration
             states:                         # raising errors level
                 in_progress:        10
