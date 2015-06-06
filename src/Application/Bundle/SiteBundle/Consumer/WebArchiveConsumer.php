@@ -8,6 +8,7 @@ use Application\Bundle\SiteBundle\Document\WebArchive\Snapshot as DocumentSnapsh
 use Application\Bundle\SiteBundle\Document\WebArchive\WebArchive;
 use Application\Bundle\SiteBundle\Manager\UrlManager;
 use Application\Component\Link\Domain\UrlInterface;
+use Doctrine\Common\Collections\Collection;
 use Sonata\NotificationBundle\Consumer\ConsumerReturnInfo;
 use Sonata\NotificationBundle\Consumer\ConsumerEvent;
 use Sonata\NotificationBundle\Consumer\ConsumerInterface;
@@ -112,14 +113,18 @@ class WebArchiveConsumer implements ConsumerInterface
         $collection = $this->generateSnapshotCollection($url);
         $snapshots = $archive->getSnapshots();
 
-        if (!empty($snapshots)) {
-            // retrieve last snapshot date saved
+        // retrieve last snapshot date saved
+        if (is_array($snapshots) && !empty($snapshots)) {
             $last = end($snapshots);
 
-            if (!$last instanceof \WebArchive\Snapshot) {
-                goto all;
-            }
+        } elseif ($snapshots instanceof Collection && !$snapshots->isEmpty()) {
+            $last = $snapshots->last();
 
+        } else {
+            $last = null;
+        }
+
+        if (null !== $last) {
             $snapshotList = [];
             /** @var \WebArchive\Snapshot $snapshot */
             foreach ($collection->getSnapshots() as $snapshot) {
@@ -133,7 +138,6 @@ class WebArchiveConsumer implements ConsumerInterface
             return $snapshotList;
         }
 
-        all:
         return $collection->getSnapshots();
     }
 
