@@ -114,13 +114,16 @@ class WebArchiveConsumer implements ConsumerInterface
 
         if (!empty($snapshots)) {
             // retrieve last snapshot date saved
-            /** @var \Datetime $lastDate */
-            $lastDate = end($snapshots)->getDate();
+            $last = end($snapshots);
+
+            if (!$last instanceof \WebArchive\Snapshot) {
+                goto all;
+            }
 
             $snapshotList = [];
             /** @var \WebArchive\Snapshot $snapshot */
             foreach ($collection->getSnapshots() as $snapshot) {
-                if ($lastDate > $snapshot->getDate()) {
+                if ($last->getDate() > $snapshot->getDate()) {
                     continue;
                 }
 
@@ -130,6 +133,7 @@ class WebArchiveConsumer implements ConsumerInterface
             return $snapshotList;
         }
 
+        all:
         return $collection->getSnapshots();
     }
 
