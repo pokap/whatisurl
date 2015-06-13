@@ -220,7 +220,7 @@ class Parser implements ParserInterface
     protected function retrieveRobotstxt(ParserReportInterface $report)
     {
         $link = $report->getUrl();
-        $robots = $this->robotsFactory->create($link->getHost());
+        $robots = $this->robotsFactory->create($link->getSchema(), $link->getHost());
 
         $date = (new \DateTime())->sub(new \DateInterval('P1M'));
 

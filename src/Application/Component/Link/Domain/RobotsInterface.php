@@ -10,6 +10,20 @@ namespace Application\Component\Link\Domain;
 interface RobotsInterface
 {
     /**
+     * Returns the schema.
+     *
+     * @return string
+     */
+    public function getSchema();
+
+    /**
+     * Sets the schema.
+     *
+     * @param string $schema
+     */
+    public function setSchema($schema);
+
+    /**
      * Returns the host.
      *
      * @return string

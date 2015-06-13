@@ -14,9 +14,10 @@ interface RobotsFactoryInterface
     /**
      * Create new instance of robots domain.
      *
+     * @param string $schema
      * @param string $host
      *
      * @return RobotsInterface
      */
-    public function create($host);
+    public function create($schema, $host);
 }

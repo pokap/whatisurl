@@ -8,6 +8,7 @@
 
         <field name="id" id="true" />
 
+        <field fieldName="schema"        type="string" />
         <field fieldName="host"          type="string" />
         <field fieldName="userAgent"     type="string"       name="user_agent" />
         <field fieldName="directives"    type="hash" />
@@ -16,7 +17,8 @@
 
         <indexes>
             <index name="host_id">
-                <key name="host" order="asc" />
+                <key name="schema"  order="asc" />
+                <key name="host"    order="asc" />
             </index>
         </indexes>
 

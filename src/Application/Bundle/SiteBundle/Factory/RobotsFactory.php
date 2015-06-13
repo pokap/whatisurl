@@ -28,16 +28,19 @@ class RobotsFactory extends \Application\Component\Link\Factory\RobotsFactory
     /**
      * {@inheritdoc}
      */
-    public function create($host)
+    public function create($schema, $host)
     {
         /** @var Robots|null $robots */
-        $robots = $this->repository->findOneBy(['host' => $host]);
+        $robots = $this->repository->findOneBy([
+            'schema'    => $schema,
+            'host'      => $host,
+        ]);
 
         if (null !== $robots) {
             return $robots;
         }
 
-        return parent::create($host);
+        return parent::create($schema, $host);
     }
 
     /**

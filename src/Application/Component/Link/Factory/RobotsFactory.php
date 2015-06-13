@@ -15,9 +15,10 @@ class RobotsFactory implements RobotsFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create($host)
+    public function create($schema, $host)
     {
         $robots = $this->newRobots();
+        $robots->setSchema($schema);
         $robots->setHost($host);
 
         return $robots;

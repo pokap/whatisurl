@@ -12,6 +12,11 @@ class Robots implements RobotsInterface
     /**
      * @var string
      */
+    protected $schema;
+
+    /**
+     * @var string
+     */
     protected $host;
 
     /**
@@ -28,6 +33,22 @@ class Robots implements RobotsInterface
      * @var \DateTime
      */
     protected $updatedAt;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSchema()
+    {
+        return $this->schema;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSchema($schema)
+    {
+        $this->schema = (string) $schema;
+    }
 
     /**
      * {@inheritdoc}
