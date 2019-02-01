@@ -13,4 +13,5 @@
 /front/node_modules/
 /front/src/bower/
 /composer.phar
+/composer.lock
 .idea
