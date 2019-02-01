@@ -23,7 +23,7 @@ interface ParserInterface
      *
      * @throws InvalidArgumentException
      */
-    public function parse(UriInterface $uri, $timeout = 10.);
+    public function parse(UriInterface $uri, float $timeout = 10.): ParserReportInterface;
 
     /**
      * Analyse and update the link.
@@ -35,5 +35,5 @@ interface ParserInterface
      *
      * @throws InvalidArgumentException
      */
-    public function update(ParserReportInterface $report, $timeout = 10.);
+    public function update(ParserReportInterface $report, float $timeout = 10.): void;
 }

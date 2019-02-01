@@ -1,4 +1,4 @@
-<?php
+<?hh
 
 namespace Application\Bundle\SiteBundle\Controller\Front;
 
@@ -27,9 +27,9 @@ class AppController extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $strDate = '2015-05-12 23:00:00';
         $date = new \DateTime($strDate);
@@ -55,9 +55,9 @@ class AppController extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function searchAction(Request $request)
+    public function searchAction(Request $request): Response
     {
         $uri = new Uri($request->query->get('url'));
 
@@ -129,7 +129,7 @@ class AppController extends Controller
      *
      * @return Response
      */
-    protected function createJsonResponse(Request $request, Url $url)
+    protected function createJsonResponse(Request $request, Url $url): Response
     {
         $json = json_encode($url);
 
@@ -159,7 +159,7 @@ class AppController extends Controller
      *
      * @return ParserInterface
      */
-    private function getParser()
+    private function getParser(): ParserInterface
     {
         return $this->container->get('site.link.parser');
     }
@@ -169,7 +169,7 @@ class AppController extends Controller
      *
      * @return UrlManager
      */
-    private function getUrlManager()
+    private function getUrlManager(): UrlManager
     {
         return $this->container->get('site.link.url_manager');
     }
@@ -179,7 +179,7 @@ class AppController extends Controller
      *
      * @return SiteRepositoryInterface
      */
-    private function getSiteRepository()
+    private function getSiteRepository(): SiteRepositoryInterface
     {
         return $this->container->get('site.link.site_repository');
     }
@@ -189,7 +189,7 @@ class AppController extends Controller
      *
      * @return UrlDirectionManager
      */
-    private function getUrlDirectionManager()
+    private function getUrlDirectionManager(): UrlDirectionManager
     {
         return $this->container->get('site.link.url_direction_manager');
     }
@@ -199,7 +199,7 @@ class AppController extends Controller
      *
      * @param Url $url
      */
-    private function sendParserAsync(Url $url)
+    private function sendParserAsync(Url $url): Url
     {
         $this->container->get('site.link.parser_async_producer')->send(['url' => $url, 'deep' => 2]);
     }
@@ -209,7 +209,7 @@ class AppController extends Controller
      *
      * @param Url $url
      */
-    private function sendWebArchiveAsync(Url $url)
+    private function sendWebArchiveAsync(Url $url): Url
     {
         $this->container->get('site.link.parser_async_producer')->send(['url' => $url]);
     }

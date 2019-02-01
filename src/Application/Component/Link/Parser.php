@@ -126,7 +126,7 @@ class Parser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse(UriInterface $uri, $timeout = 10.)
+    public function parse(UriInterface $uri, float $timeout = 10.): ParserReportInterface
     {
         $report = $this->parserReportFactory->create($this->urlFactory->create($uri));
 
@@ -138,7 +138,7 @@ class Parser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function update(ParserReportInterface $report, $timeout = 10.)
+    public function update(ParserReportInterface $report, float $timeout = 10.): void
     {
         $link = $report->getUrl();
         $startTime = microtime(true);

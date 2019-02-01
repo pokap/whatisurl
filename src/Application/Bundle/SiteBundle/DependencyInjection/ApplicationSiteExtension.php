@@ -29,7 +29,7 @@ class ApplicationSiteExtension extends Extension
 
         $this->addClassesToCompile(array(
             // controllers
-            'Application\\Bundle\\SiteBundle\\Controller\\Front\\AppController',
+//            'Application\\Bundle\\SiteBundle\\Controller\\Front\\AppController',
 
             // models
             'Application\\Bundle\\SiteBundle\\Document\\Url',
